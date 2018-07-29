@@ -57,14 +57,14 @@ class CactusPopulator extends AmountPopulator {
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * Gets the highest workable block
 	 *
 	 * @param int $x
 	 * @param int $z
-	 * @return void
+	 *
+	 * @return int
 	 */
 	protected function getHighestWorkableBlock($x, $z) {
 		for($y = Level::Y_MAX - 1; $y >= 0; -- $y) {

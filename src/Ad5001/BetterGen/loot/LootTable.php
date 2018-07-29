@@ -82,13 +82,15 @@ class LootTable {
 		$cfg->set($place->x . ";" . $place->y . ";" . $place->z, $loots);
 		$cfg->save();
 	}
-	
+
 	/**
 	 * Synchronous inventory filling method
 	 *
 	 * @param BaseInventory $inv
 	 * @param Vector3 $pos
+	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public static function fillChest(BaseInventory $inv, Vector3 $pos) {
 		$cfg = new Config(self::getPluginFolder() . "processingLoots.json", Config::JSON);	
@@ -101,7 +103,9 @@ class LootTable {
 				for($i = 0; $i <= $randCount; $i++) {
 					$rand = rand(0, count($loots));
 					$items[$rand] = Item::get($loot["id"], $loot["data"], rand($loot["minCount"], $loot["maxCount"]));
-					if(isset($loot["tags"])) $items[$rand]->setCompoundTag(NBT::parseJSON($loot["tags"]));
+					if(isset($loot["tags"])) {
+						$items[$rand]->setCompoundTag(JsonNbtParser::parseJSON($loot["tags"]));
+					}
 				}
 			}
 			$inv->setContents($items);

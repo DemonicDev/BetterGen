@@ -27,10 +27,10 @@ use pocketmine\block\LapisOre;
 use pocketmine\block\RedstoneOre;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\OreType;
+use pocketmine\level\generator\populator\Ore;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
-
 
 class FloatingIslandPopulator extends AmountPopulator {
 	/** @var ChunkManager */
@@ -62,13 +62,14 @@ class FloatingIslandPopulator extends AmountPopulator {
 			}
 		} 
 	}
-	
-	
-	
+
 	/**
 	 * Gets the top block (y) on an x and z axes
+	 *
 	 * @param int $x
 	 * @param int $z
+	 *
+	 * @return int
 	 */
 	protected function getHighestWorkableBlock($x, $z) {
 		for($y = Level::Y_MAX - 1; $y > 0; -- $y) {
@@ -97,7 +98,6 @@ class FloatingIslandPopulator extends AmountPopulator {
 	public function buildIslandBottomShape(ChunkManager $level, Vector3 $pos, int $radius, Random $random) {
 		$pos = $pos->round();
 		$currentLen = 1;
-		$hBound = 0;
 		$current = 0;
 		for($y = $pos->y - 1; $radius > 0; $y--) {
 			for($x = $pos->x - $radius; $x <= $pos->x + $radius; $x++) {
@@ -122,7 +122,6 @@ class FloatingIslandPopulator extends AmountPopulator {
 				}
 			}
 			$current++;
-			$oldHB = $hBound;
 			$hBound = $random->nextFloat();
 			if($current >= $currentLen + $hBound) {
 				if($radius == 0) return $pos->y;
@@ -148,8 +147,8 @@ class FloatingIslandPopulator extends AmountPopulator {
 	 * @return void
 	 */
 	public function populateOres(ChunkManager $level, Vector3 $pos, int $width, int $height, Random $random) {
-		$ores = new \pocketmine\level\generator\populator\Ore();
-		$ores->setOreTypes([new OreType(new CoalOre (), 20, 16, $pos->y - $height, $pos->y), new OreType(new IronOre (), 20, 8, $pos->y - $height, $pos->y - round($height * 0.75)), new OreType(new RedstoneOre (), 8, 7, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new LapisOre (), 1, 6, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new GoldOre (), 2, 8, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new DiamondOre (), 1, 7, $pos->y - $height, $pos->y - round($height / 4))
+		$ores = new Ore();
+		$ores->setOreTypes([new OreType(new CoalOre(), 20, 16, $pos->y - $height, $pos->y), new OreType(new IronOre(), 20, 8, $pos->y - $height, $pos->y - round($height * 0.75)), new OreType(new RedstoneOre(), 8, 7, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new LapisOre(), 1, 6, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new GoldOre(), 2, 8, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new DiamondOre(), 1, 7, $pos->y - $height, $pos->y - round($height / 4))
 		]);
 		$ores->populate($level, $pos->x >> 4, $pos->z >> 4, $random);//x z undefined
 	}

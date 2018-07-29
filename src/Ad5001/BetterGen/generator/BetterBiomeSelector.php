@@ -16,7 +16,7 @@
  */
 namespace Ad5001\BetterGen\generator;
 
-use pocketmine\level\generator\biome\Biome;
+use pocketmine\level\biome\Biome;
 use pocketmine\level\generator\biome\BiomeSelector;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\utils\Random;
@@ -34,22 +34,21 @@ class BetterBiomeSelector extends BiomeSelector {
 	/** @var Biome[] */
 	protected $biomes = [ ];
 
-	/** @var callable */
-	protected $lookup;
-
 	/**
 	 * Constructs the class
 	 *
 	 * @param Random $random
-	 * @param callable $lookup
 	 * @param Biome $fallback
 	 */
-	public function __construct(Random $random, callable $lookup, Biome $fallback) {
-		parent::__construct($random, $lookup, $fallback);
+	public function __construct(Random $random, Biome $fallback) {
+		parent::__construct($random);
 		$this->fallback = $fallback;
-		$this->lookup = $lookup;
 		$this->temperature = new Simplex($random, 2, 1 / 16, 1 / 512);
 		$this->rainfall = new Simplex($random, 2, 1 / 16, 1 / 512);
+	}
+
+	protected function lookup(float $temperature, float $rainfall) : int {
+		return (int)BetterNormal::getBiome($temperature, $rainfall);
 	}
 
 	/**
@@ -76,7 +75,8 @@ class BetterBiomeSelector extends BiomeSelector {
 	 *
 	 * @param int $x
 	 * @param int $z
-	 * @return void
+	 *
+	 * @return float|int
 	 */
 	public function getTemperature($x, $z) {
 		return ($this->temperature->noise2D($x, $z, true) + 1) / 2;
@@ -87,7 +87,8 @@ class BetterBiomeSelector extends BiomeSelector {
 	 *
 	 * @param int $x
 	 * @param int $z
-	 * @return void
+	 *
+	 * @return float|int
 	 */
 	public function getRainfall($x, $z) {
 		return ($this->rainfall->noise2D($x, $z, true) + 1) / 2;

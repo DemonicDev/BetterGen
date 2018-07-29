@@ -57,11 +57,14 @@ class LakePopulator extends AmountPopulator {
 					if ($level->getBlockIdAt($xx, $yy, $zz) == Block::WATER)
 						$level->setBlockIdAt($xx, $yy, $zz, Block::AIR);
 	}
-	
+
 	/**
 	 * Gets the top block (y) on an x and z axes
+	 *
 	 * @param int $x
 	 * @param int $z
+	 *
+	 * @return int
 	 */
 	protected function getHighestWorkableBlock($x, $z) {
 		for($y = Level::Y_MAX - 1; $y > 0; -- $y) {

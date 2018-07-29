@@ -17,10 +17,9 @@
 
 namespace Ad5001\BetterGen\populator;
 
-use Ad5001\BetterGen\generator\BetterBiomeSelector;
 use pocketmine\block\Block;
+use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\biome\Biome;
 use pocketmine\level\Level;
 use pocketmine\utils\Random;
 

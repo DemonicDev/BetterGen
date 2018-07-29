@@ -23,7 +23,6 @@ use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\PopulatorObject;
 use pocketmine\utils\Random;
 
-
 class Well extends PopulatorObject {
 	/** @var ChunkManager */
 	protected $level;
@@ -66,7 +65,8 @@ class Well extends PopulatorObject {
 	 * @param int $y
 	 * @param int $z
 	 * @param Random $random
-	 * @return void
+	 *
+	 * @return bool
 	 */
 	public function canPlaceObject(ChunkManager $level, $x, $y, $z, Random $random) {
 		$this->level = $level;

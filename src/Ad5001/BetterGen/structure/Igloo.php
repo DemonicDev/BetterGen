@@ -36,7 +36,7 @@ class Igloo extends PopulatorObject {
 	];
 	/** @var int */
 	protected $direction;
-	
+
 	/**
 	 * Checks if an igloo is placable
 	 *
@@ -45,7 +45,8 @@ class Igloo extends PopulatorObject {
 	 * @param int $y
 	 * @param int $z
 	 * @param Random $random
-	 * @return void
+	 *
+	 * @return bool
 	 */
 	public function canPlaceObject(ChunkManager $level, $x, $y, $z, Random $random) {
 		$this->direction = $random->nextBoundedInt(4);
@@ -81,7 +82,7 @@ class Igloo extends PopulatorObject {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Places an igloo
 	 *
@@ -90,7 +91,8 @@ class Igloo extends PopulatorObject {
 	 * @param int $y
 	 * @param int $z
 	 * @param Random $random
-	 * @return void
+	 *
+	 * @return bool
 	 */
 	public function placeObject(ChunkManager $level, $x, $y, $z, Random $random) {
 		if (! isset($this->direction) && ! $this->canPlaceObject($level, $x, $y, $z, $random))

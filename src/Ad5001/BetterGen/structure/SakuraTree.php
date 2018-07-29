@@ -444,6 +444,9 @@ class SakuraTree extends Tree {
 	public $leafType;
 	/** @var int */
 	public $leaf2Type;
+	public $realLeafBlock;
+	/** @var Random */
+	private $random;
 
 	/**
 	 * Constructs the class

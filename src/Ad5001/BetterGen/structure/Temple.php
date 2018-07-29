@@ -114,7 +114,6 @@ class Temple extends PopulatorObject {
 	protected $level;
 	protected $direction = 0;
 
-	
 	/**
 	 * Checks if a temple is placable
 	 *
@@ -123,7 +122,8 @@ class Temple extends PopulatorObject {
 	 * @param int $y
 	 * @param int $z
 	 * @param Random $random
-	 * @return void
+	 *
+	 * @return bool
 	 */
 	public function canPlaceObject(ChunkManager $level, $x, $y, $z, Random $random) {
 		$this->level = $level;
@@ -881,14 +881,16 @@ class Temple extends PopulatorObject {
 		$this->placeBlock($x, $y + 9, $z + 2, Block::SANDSTONE_STAIRS, 3);
 	}
 
-
 	/**
 	 * Places a slab
+	 *
 	 * @param $x int
 	 * @param $y int
 	 * @param $z int
 	 * @param $id int
 	 * @param $meta int
+	 * @param bool $top
+	 *
 	 * @return void
 	 */
 	protected function placeSlab($x, $y, $z, $id = 44, $meta = 1, $top = false) {

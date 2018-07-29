@@ -21,9 +21,9 @@ use Ad5001\BetterGen\loot\LootTable;
 use Ad5001\BetterGen\utils\BuildingUtils;
 use pocketmine\block\Block;
 use pocketmine\level\ChunkManager;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
-use pocketmine\level\Level;
 
 class MineshaftPopulator extends AmountPopulator {
 	/** var int */
@@ -426,11 +426,14 @@ class MineshaftPopulator extends AmountPopulator {
 				break;
 		}
 	}
-	
+
 	/**
 	 * Gets the top block (y) on an x and z axes
+	 *
 	 * @param int $x
 	 * @param int $z
+	 *
+	 * @return int
 	 */
 	protected function getHighestWorkableBlock($x, $z) {
 		for($y = Level::Y_MAX - 1; $y > 0; -- $y) {
@@ -443,4 +446,3 @@ class MineshaftPopulator extends AmountPopulator {
 		return ++$y;
 	}
 }
-?>

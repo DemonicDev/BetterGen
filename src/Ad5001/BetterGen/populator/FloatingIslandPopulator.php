@@ -33,6 +33,7 @@ use pocketmine\level\generator\populator\Ore;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use function intval;
 
 class FloatingIslandPopulator extends AmountPopulator{
 
@@ -151,11 +152,11 @@ class FloatingIslandPopulator extends AmountPopulator{
 		$ores = new Ore();
 		$ores->setOreTypes([
 			new OreType(new CoalOre(), 20, 16, $pos->y - $height, $pos->y),
-			new OreType(new IronOre(), 20, 8, $pos->y - $height, $pos->y - round($height * 0.75)),
-			new OreType(new RedstoneOre(), 8, 7, $pos->y - $height, $pos->y - round($height / 2)),
-			new OreType(new LapisOre(), 1, 6, $pos->y - $height, $pos->y - round($height / 2)),
-			new OreType(new GoldOre(), 2, 8, $pos->y - $height, $pos->y - round($height / 2)),
-			new OreType(new DiamondOre(), 1, 7, $pos->y - $height, $pos->y - round($height / 4))
+			new OreType(new IronOre(), 20, 8, $pos->y - $height, $pos->y - intval($height * 0.75)),
+			new OreType(new RedstoneOre(), 8, 7, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(new LapisOre(), 1, 6, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(new GoldOre(), 2, 8, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(new DiamondOre(), 1, 7, $pos->y - $height, $pos->y - intval($height / 4))
 		]);
 		$ores->populate($level, $pos->x >> 4, $pos->z >> 4, $random);//x z undefined
 	}

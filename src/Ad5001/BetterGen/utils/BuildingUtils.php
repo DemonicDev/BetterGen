@@ -57,6 +57,10 @@ class BuildingUtils{
 		for($x = $pos1->x; $x >= $pos2->x; $x--){
 			for($y = $pos1->y; $y >= $pos2->y; $y--){
 				for($z = $pos1->z; $z >= $pos2->z; $z--){
+					$x = intval($x);
+					$y = intval($y);
+					$z = intval($z);
+
 					$level->setBlockIdAt($x, $y, $z, $block->getId());
 					$level->setBlockDataAt($x, $y, $z, $block->getDamage());
 				}
@@ -72,8 +76,8 @@ class BuildingUtils{
 	 * @return array
 	 */
 	public static function minmax(Vector3 $pos1, Vector3 $pos2): array{
-		$v1 = new Vector3(max($pos1->x, $pos2->x), max($pos1->y, $pos2->y), max($pos1->z, $pos2->z));
-		$v2 = new Vector3(min($pos1->x, $pos2->x), min($pos1->y, $pos2->y), min($pos1->z, $pos2->z));
+		$v1 = new Vector3(max($pos1->getFloorX(), $pos2->getFloorX()), max($pos1->getFloorY(), $pos2->getFloorY()), max($pos1->getFloorZ(), $pos2->getFloorZ()));
+		$v2 = new Vector3(min($pos1->getFloorX(), $pos2->getFloorX()), min($pos1->getFloorY(), $pos2->getFloorY()), min($pos1->getFloorZ(), $pos2->getFloorZ()));
 
 		return [
 			$v1, $v2
@@ -102,6 +106,10 @@ class BuildingUtils{
 			for($y = $pos1->y; $y >= $pos2->y; $y--){
 				for($z = $pos1->z; $z >= $pos2->z; $z--){
 					if($random !== null ? $random->nextBoundedInt($randMax) == 0 : rand(0, $randMax) == 0){
+						$x = intval($x);
+						$y = intval($y);
+						$z = intval($z);
+
 						$level->setBlockIdAt($x, $y, $z, $block->getId());
 						$level->setBlockDataAt($x, $y, $z, $block->getDamage());
 					}
@@ -127,6 +135,10 @@ class BuildingUtils{
 		for($x = $pos1->x; $x >= $pos2->x; $x--){
 			for($y = $pos1->y; $y >= $pos2->y; $y--){
 				for($z = $pos1->z; $z >= $pos2->z; $z--){
+					$x = intval($x);
+					$y = intval($y);
+					$z = intval($z);
+
 					$return[] = call_user_func($call, new Vector3($x, $y, $z), ...$params);
 				}
 			}
@@ -149,17 +161,27 @@ class BuildingUtils{
 
 		for($y = $pos1->y; $y >= $pos2->y; $y--){
 			for($x = $pos1->x; $x >= $pos2->x; $x--){
-				$level->setBlockIdAt($x, $y, $pos1->z, $block->getId());
-				$level->setBlockDataAt($x, $y, $pos1->z, $block->getDamage());
-				$level->setBlockIdAt($x, $y, $pos2->z, $block->getId());
-				$level->setBlockDataAt($x, $y, $pos2->z, $block->getDamage());
+				$x = intval($x);
+				$y = intval($y);
+				$z1 = intval($pos1->z);
+				$z2 = intval($pos2->z);
+
+				$level->setBlockIdAt($x, $y, $z1, $block->getId());
+				$level->setBlockDataAt($x, $y, $z1, $block->getDamage());
+				$level->setBlockIdAt($x, $y, $z2, $block->getId());
+				$level->setBlockDataAt($x, $y, $z2, $block->getDamage());
 			}
 
 			for($z = $pos1->z; $z >= $pos2->z; $z--){
-				$level->setBlockIdAt($pos1->x, $y, $z, $block->getId());
-				$level->setBlockDataAt($pos1->x, $y, $z, $block->getDamage());
-				$level->setBlockIdAt($pos2->x, $y, $z, $block->getId());
-				$level->setBlockDataAt($pos2->x, $y, $z, $block->getDamage());
+				$x1 = intval($pos1->z);
+				$x2 = intval($pos2->z);
+				$y = intval($y);
+				$z = intval($z);
+
+				$level->setBlockIdAt($x1, $y, $z, $block->getId());
+				$level->setBlockDataAt($x1, $y, $z, $block->getDamage());
+				$level->setBlockIdAt($x2, $y, $z, $block->getId());
+				$level->setBlockDataAt($x2, $y, $z, $block->getDamage());
 			}
 		}
 	}
@@ -178,8 +200,12 @@ class BuildingUtils{
 
 		for($x = $pos1->x; $x >= $pos2->x; $x--){
 			for($z = $pos1->z; $z >= $pos2->z; $z--){
-				$level->setBlockIdAt($x, $pos1->y, $z, $block->getId());
-				$level->setBlockDataAt($x, $pos1->y, $z, $block->getDamage());
+				$x = intval($x);
+				$y = intval($pos1->y);
+				$z = intval($z);
+
+				$level->setBlockIdAt($x, $y, $z, $block->getId());
+				$level->setBlockDataAt($x, $y, $z, $block->getDamage());
 			}
 		}
 	}
@@ -196,15 +222,15 @@ class BuildingUtils{
 	public static function corners(ChunkManager $level, Vector3 $pos1, Vector3 $pos2, Block $block): void{
 		list($pos1, $pos2) = self::minmax($pos1, $pos2);
 
-		for($y = $pos1->y; $y >= $pos2->y; $y--){
-			$level->setBlockIdAt($pos1->x, $y, $pos1->z, $block->getId());
-			$level->setBlockDataAt($pos1->x, $y, $pos1->z, $block->getDamage());
-			$level->setBlockIdAt($pos2->x, $y, $pos1->z, $block->getId());
-			$level->setBlockDataAt($pos2->x, $y, $pos1->z, $block->getDamage());
-			$level->setBlockIdAt($pos1->x, $y, $pos2->z, $block->getId());
-			$level->setBlockDataAt($pos1->x, $y, $pos2->z, $block->getDamage());
-			$level->setBlockIdAt($pos2->x, $y, $pos2->z, $block->getId());
-			$level->setBlockDataAt($pos2->x, $y, $pos2->z, $block->getDamage());
+		for($y = $pos1->getFloorY(); $y >= $pos2->getFloorY(); $y--){
+			$level->setBlockIdAt($pos1->getFloorX(), $y, $pos1->getFloorZ(), $block->getId());
+			$level->setBlockDataAt($pos1->getFloorX(), $y, $pos1->getFloorZ(), $block->getDamage());
+			$level->setBlockIdAt($pos2->getFloorX(), $y, $pos1->getFloorZ(), $block->getId());
+			$level->setBlockDataAt($pos2->getFloorX(), $y, $pos1->getFloorZ(), $block->getDamage());
+			$level->setBlockIdAt($pos1->getFloorX(), $y, $pos2->getFloorZ(), $block->getId());
+			$level->setBlockDataAt($pos1->getFloorX(), $y, $pos2->getFloorZ(), $block->getDamage());
+			$level->setBlockIdAt($pos2->getFloorX(), $y, $pos2->getFloorZ(), $block->getId());
+			$level->setBlockDataAt($pos2->getFloorX(), $y, $pos2->getFloorZ(), $block->getDamage());
 		}
 	}
 
@@ -220,10 +246,10 @@ class BuildingUtils{
 	public static function bottom(ChunkManager $level, Vector3 $pos1, Vector3 $pos2, Block $block): void{
 		list($pos1, $pos2) = self::minmax($pos1, $pos2);
 
-		for($x = $pos1->x; $x >= $pos2->x; $x--){
-			for($z = $pos1->z; $z >= $pos2->z; $z--){
-				$level->setBlockIdAt($x, $pos2->y, $z, $block->getId());
-				$level->setBlockDataAt($x, $pos2->y, $z, $block->getDamage());
+		for($x = $pos1->getFloorX(); $x >= $pos2->getFloorX(); $x--){
+			for($z = $pos1->getFloorZ(); $z >= $pos2->getFloorZ(); $z--){
+				$level->setBlockIdAt($x, $pos2->getFloorY(), $z, $block->getId());
+				$level->setBlockDataAt($x, $pos2->getFloorY(), $z, $block->getDamage());
 			}
 		}
 	}

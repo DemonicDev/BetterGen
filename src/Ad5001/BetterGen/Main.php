@@ -257,6 +257,11 @@ class Main extends PluginBase implements Listener{
 		$cfg = new Config(LootTable::getPluginFolder() . "processingLoots.json", Config::JSON);
 		foreach($cfg->getAll() as $key => $value){
 			list($x, $y, $z) = explode(";", $key);
+
+			$x = intval($x);
+			$y = intval($y);
+			$z = intval($z);
+
 			if($value["saveAs"] == "chest" && $event->getLevel()->getBlockIdAt($x, $y, $z) == Block::AIR){
 				$event->getLevel()->setBlockIdAt($x, $y, $z, Block::CHEST);
 			}else{

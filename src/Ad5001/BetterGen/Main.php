@@ -42,6 +42,7 @@ use pocketmine\tile\Tile;
 use pocketmine\utils\Config;
 use pocketmine\utils\Random;
 use function intval;
+use function mkdir;
 
 class Main extends PluginBase implements Listener{
 
@@ -67,6 +68,7 @@ class Main extends PluginBase implements Listener{
 	 * Save the resources first before enabling the plugin.
 	 */
 	public function onLoad(): void{
+		@mkdir($this->getDataFolder(). "loots");
 		$this->saveResource("loots/igloo.json");
 		$this->saveResource("loots/mineshaft.json");
 		$this->saveResource("loots/temple.json");

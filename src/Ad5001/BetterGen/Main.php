@@ -41,6 +41,7 @@ use pocketmine\tile\Chest;
 use pocketmine\tile\Tile;
 use pocketmine\utils\Config;
 use pocketmine\utils\Random;
+use function intval;
 
 class Main extends PluginBase implements Listener{
 
@@ -219,7 +220,7 @@ class Main extends PluginBase implements Listener{
 	 * @return int
 	 */
 	public function generateRandomSeed(): int{
-		return (int) round(rand(0, round(time()) / memory_get_usage(true)) * (int) str_shuffle("127469453645108") / (int) str_shuffle("12746945364"));
+		return intval(rand(0, intval(time() / memory_get_usage(true) * (int) str_shuffle("127469453645108") / (int) str_shuffle("12746945364"))));
 	}
 
 	/**

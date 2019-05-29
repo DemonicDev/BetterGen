@@ -24,6 +24,7 @@ use pocketmine\block\Wood;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\Tree;
 use pocketmine\utils\Random;
+use function intval;
 
 class_alias("pocketmine\\level\\generator\\object\\Tree", "Ad5001\\BetterGen\\structure\\Tree");
 
@@ -686,7 +687,11 @@ class SakuraTree extends Tree{
 	 * @param int          $z
 	 * @return void
 	 */
-	public function setLog(ChunkManager $level, int $x, int $y, int $z): void{
+	public function setLog(ChunkManager $level, $x, $y, $z): void{
+		$x = intval($x);
+		$y = intval($y);
+		$z = intval($z);
+
 		$level->setBlockIdAt($x, $y, $z, $this->trunkBlock);
 		$level->setBlockDataAt($x, $y, $z, $this->type);
 
@@ -708,7 +713,11 @@ class SakuraTree extends Tree{
 	 * @param Random       $random
 	 * @return void
 	 */
-	public function setLeave(ChunkManager $level, int $x, int $y, int $z, Random $random): void{
+	public function setLeave(ChunkManager $level, $x, $y, $z, Random $random): void{
+		$x = intval($x);
+		$y = intval($y);
+		$z = intval($z);
+
 		$data = [
 			$this->leafType,
 			$this->leaf2Type

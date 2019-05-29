@@ -25,6 +25,7 @@ use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\PopulatorObject;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use function intval;
 
 class Temple extends PopulatorObject{
 
@@ -949,10 +950,14 @@ class Temple extends PopulatorObject{
 	 *
 	 * @return void
 	 */
-	protected function placeSlab(int $x, int $y, int $z, int $id = Block::STONE_SLAB, int $meta = 1, bool $top = false){
+	protected function placeSlab($x, $y, $z, int $id = Block::STONE_SLAB, int $meta = 1, bool $top = false){
 		if($top){
 			$meta &= 0x08;
 		}
+
+		$x = intval($x);
+		$y = intval($y);
+		$z = intval($z);
 
 		$this->placeBlock($x, $y, $z, $id, $meta);
 	}

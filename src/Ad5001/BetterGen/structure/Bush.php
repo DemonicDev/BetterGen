@@ -24,6 +24,7 @@ use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\PopulatorObject;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use function intval;
 
 class Bush extends PopulatorObject{
 
@@ -90,7 +91,11 @@ class Bush extends PopulatorObject{
 	 * @param ChunkManager $level
 	 * @return void
 	 */
-	public function placeLeaf(int $x, int $y, int $z, ChunkManager $level): void{
+	public function placeLeaf($x, $y, $z, ChunkManager $level): void{
+		$x = intval($x);
+		$y = intval($y);
+		$z = intval($z);
+
 		if(isset($this->overridable[$level->getBlockIdAt($x, $y, $z)]) && !isset($this->overridable[$level->getBlockIdAt($x, $y - 1, $z)])){
 			$level->setBlockIdAt($x, $y, $z, $this->leaf[0]);
 			$level->setBlockDataAt($x, $y, $z, $this->leaf[1]);

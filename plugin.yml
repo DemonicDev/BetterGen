@@ -1,44 +1,47 @@
 ---
-
-#  ____             __     __                    ____                       
-# /\  _`\          /\ \__ /\ \__                /\  _`\                     
-# \ \ \L\ \     __ \ \ ,_\\ \ ,_\     __   _ __ \ \ \L\_\     __     ___    
-#  \ \  _ <'  /'__`\\ \ \/ \ \ \/   /'__`\/\`'__\\ \ \L_L   /'__`\ /' _ `\  
-#   \ \ \L\ \/\  __/ \ \ \_ \ \ \_ /\  __/\ \ \/  \ \ \/, \/\  __/ /\ \/\ \ 
-#    \ \____/\ \____\ \ \__\ \ \__\\ \____\\ \_\   \ \____/\ \____\\ \_\ \_\
-#     \/___/  \/____/  \/__/  \/__/ \/____/ \/_/    \/___/  \/____/ \/_/\/_/
-# Tomorrow's pocketmine generator.
-# @category World Generator
-# @api 3.0.0
-# @link https://github.com/Ad5001/BetterGen
-# @version 1.1
 name: BetterGen
-author: Ad5001
-contributors: 
- - thebigsmileXD (XenialDan)
- - wyt3dr4g0n
 main: Ad5001\BetterGen\Main
-version: 1.1
+api:
+- 3.0.0
+author: Ad5001
+contributors:
+- thebigsmileXD (XenialDan)
+- wyt3dr4g0n
+- JackMD
+- jasonwynn10
+version: 2.0.0
 load: STARTUP
-api: [3.0.0]
+
 commands:
-    createworld:
-        description: Generates a new world.
-        usage: "/createworld <name> [generator = betternormal] [seed = rand()] [options (json)]"
-        permission: bettergen.cmd.createworld
-    worldtp:
-        description: Teleports you to an another world
-        usage: "/worldtp <world name>"
-        permission: bettergen.cmd.worldtp
-    temple:
-        description: Spawns a temple for debugging
-        usage: "/temple"
-        permission: bettergen.cmd.debug
+  createworld:
+    description: Generates a new world.
+    usage: "/createworld <name> [generator = betternormal] [seed = rand()] [options (json)]"
+    permission: bettergen.command.createworld
+  worldtp:
+    description: Teleports you to an another world
+    usage: "/worldtp <world name>"
+    permission: bettergen.command.worldtp
+  temple:
+    description: Spawns a temple for debugging
+    usage: "/temple"
+    permission: bettergen.command.debug
+
 permissions:
-    bettergen.cmd.createworld:
-        default: op
-    bettergen.cmd.worldtp:
-        default: op
-    bettergen.cmd.debug:
-        default: op
+  bettergen:
+    default: false
+    description: Get access to all the permissions.
+    children:
+      bettergen.command:
+        default: false
+        description: Get access to all the commands.
+        children:
+          bettergen.command.createworld:
+            default: op
+            description: Access to /createworld command.
+          bettergen.command.worldtp:
+            default: op
+            description: Axxess to /worldtp command.
+          bettergen.command.debug:
+            default: op
+            description: Access to debug commands.
 ...

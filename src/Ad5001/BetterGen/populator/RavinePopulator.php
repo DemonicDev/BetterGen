@@ -24,6 +24,7 @@ use pocketmine\block\Block;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\Level;
 use pocketmine\utils\Random;
+use function intval;
 
 class RavinePopulator extends AmountPopulator{
 
@@ -75,9 +76,9 @@ class RavinePopulator extends AmountPopulator{
 				if($length < 5){
 					$length = 5;
 				}
-				$x += $random->nextRange(0 + $diffX, 2 + $diffX) - 1;
+				$x += $random->nextRange(intval(0 + $diffX), intval(2 + $diffX)) - 1;
 				$y += $random->nextRange(0, 2) - 1;
-				$z += $random->nextRange(0 + $diffZ, 2 + $diffZ) - 1;
+				$z += $random->nextRange(intval(0 + $diffZ), intval(2 + $diffZ)) - 1;
 				$height += $random->nextRange(0, 2) - 1;
 				$length += $random->nextRange(0, 2) - 1;
 			}
@@ -139,7 +140,7 @@ class RavinePopulator extends AmountPopulator{
 						$zBounded = $oldZB;
 					}
 					if(abs((abs($xx) - abs($x)) ** 2 + (abs($zz) - abs($z)) ** 2) < ((($length / 2 - $xBounded) + ($length / 2 - $zBounded)) / 2) ** 2 && $y > 0 && !in_array($this->level->getBlockIdAt(( int) round($xx), (int) round($yy), (int) round($zz)), BuildingUtils::TO_NOT_OVERWRITE) && !in_array($this->level->getBlockIdAt(( int) round($xx), (int) round($yy + 1), (int) round($zz)), BuildingUtils::TO_NOT_OVERWRITE)){
-						$this->level->setBlockIdAt(( int) round($xx), (int) round($yy), (int) round($zz), Block::AIR);
+						$this->level->setBlockIdAt((int) round($xx), (int) round($yy), (int) round($zz), Block::AIR);
 					}
 				}
 			}

@@ -26,6 +26,7 @@ use pocketmine\level\ChunkManager;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use function intval;
 
 class CavePopulator extends AmountPopulator{
 
@@ -132,7 +133,7 @@ class CavePopulator extends AmountPopulator{
 		if(!(yield new Vector3($x, $y, $z))){
 			for($i = 0; $i <= 4; $i++){
 				BuildingUtils::buildRandom($this->level, new Vector3($x, $y, $z), new Vector3($length - $i, $height - $i, $depth - $i), $random, Block::get(Block::AIR));
-				$x += round(($random->nextBoundedInt(round(30 * ($length / 10)) + 1) / 10 - 2));
+				$x += intval((($random->nextBoundedInt(intval(30 * ($length / 10)) + 1)) / 10 - 2));
 				$yP = $random->nextRange(-14, 14);
 
 				if($yP > 12){
@@ -141,7 +142,7 @@ class CavePopulator extends AmountPopulator{
 					$y--;
 				}
 
-				$z += round(($random->nextBoundedInt(round(30 * ($depth / 10)) + 1) / 10 - 1));
+				$z += intval(($random->nextBoundedInt(intval(30 * ($depth / 10)) + 1) / 10 - 1));
 
 				//x,y,z values are not being used anywhere...
 
@@ -153,7 +154,7 @@ class CavePopulator extends AmountPopulator{
 
 		while($repeat-- > 0){
 			BuildingUtils::buildRandom($this->level, new Vector3($x, $y, $z), new Vector3($length, $height, $depth), $random, Block::get(Block::AIR));
-			$x += round(($random->nextBoundedInt(round(30 * ($length / 10)) + 1) / 10 - 2));
+			$x += intval(($random->nextBoundedInt(intval(30 * ($length / 10)) + 1) / 10 - 2));
 			$yP = $random->nextRange(-14, 14);
 
 			if($yP > 12){
@@ -162,7 +163,7 @@ class CavePopulator extends AmountPopulator{
 				$y--;
 			}
 
-			$z += round(($random->nextBoundedInt(round(30 * ($depth / 10)) + 1) / 10 - 1));
+			$z += intval(($random->nextBoundedInt(intval(30 * ($depth / 10)) + 1) / 10 - 1));
 			$height += $random->nextBoundedInt(3) - 1;
 			$length += $random->nextBoundedInt(3) - 1;
 			$depth += $random->nextBoundedInt(3) - 1;

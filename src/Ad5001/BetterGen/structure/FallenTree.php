@@ -26,6 +26,7 @@ use pocketmine\level\generator\object\PopulatorObject;
 use pocketmine\level\generator\object\Tree as ObjectTree;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use function intval;
 
 class FallenTree extends PopulatorObject{
 
@@ -76,7 +77,7 @@ class FallenTree extends PopulatorObject{
 	public function canPlaceObject(ChunkManager $level, int $x, int $y, int $z, Random $random): bool{
 		//echo "Checking at $x $y $z FallenTree\n";
 		$randomHeight = round($random->nextBoundedInt($this->tree->treeHeight < 6 ? 6 : $this->tree->treeHeight) - ($this->tree->treeHeight < 6 ? 3 : $this->tree->treeHeight / 2));
-		$this->length = ($this->tree->treeHeight ?? 5) + $randomHeight;
+		$this->length = intval(($this->tree->treeHeight ?? 5) + $randomHeight);
 		$this->direction = $random->nextBoundedInt(4);
 		$this->random = $random;
 
@@ -161,7 +162,8 @@ class FallenTree extends PopulatorObject{
 	 * @return void
 	 */
 	public function placeObject(ChunkManager $level, int $x, int $y, int $z): void{
-		//echo "Placing at $x $y $z FallenTree D: $this->direction, L: $this->length\n";
+		$length = intval($this->length);
+
 		switch($this->direction){
 			case 0:
 				$level->setBlockIdAt($x, $y, $z, $this->tree->trunkBlock);
@@ -170,9 +172,9 @@ class FallenTree extends PopulatorObject{
 			break;
 
 			case 1:// Z+
-				BuildingUtils::fill($level, new Vector3($x, $y, $z), new Vector3($x, $y, $z + $this->length), Block::get($this->tree->trunkBlock, $this->tree->type + 8));
-				BuildingUtils::fillRandom($level, new Vector3($x + 1, $y, $z), new Vector3($x + 1, $y, $z + $this->length), Block::get(Block::VINE), $this->random);
-				BuildingUtils::fillRandom($level, new Vector3($x - 1, $y, $z), new Vector3($x - 1, $y, $z + $this->length), Block::get(Block::VINE), $this->random);
+				BuildingUtils::fill($level, new Vector3($x, $y, $z), new Vector3($x, $y, $z + $length), Block::get($this->tree->trunkBlock, $this->tree->type + 8));
+				BuildingUtils::fillRandom($level, new Vector3($x + 1, $y, $z), new Vector3($x + 1, $y, $z + $length), Block::get(Block::VINE), $this->random);
+				BuildingUtils::fillRandom($level, new Vector3($x - 1, $y, $z), new Vector3($x - 1, $y, $z + $length), Block::get(Block::VINE), $this->random);
 			break;
 
 			case 2:
@@ -182,22 +184,22 @@ class FallenTree extends PopulatorObject{
 			break;
 
 			case 3: // X+
-				BuildingUtils::fill($level, new Vector3($x, $y, $z), new Vector3($x + $this->length, $y, $z), Block::get($this->tree->trunkBlock, $this->tree->type + 4));
-				BuildingUtils::fillRandom($level, new Vector3($x, $y, $z + 1), new Vector3($x + $this->length, $y, $z + 1), Block::get(Block::VINE), $this->random);
-				BuildingUtils::fillRandom($level, new Vector3($x, $y, $z - 1), new Vector3($x + $this->length, $y, $z - 1), Block::get(Block::VINE), $this->random);
+				BuildingUtils::fill($level, new Vector3($x, $y, $z), new Vector3($x + $length, $y, $z), Block::get($this->tree->trunkBlock, $this->tree->type + 4));
+				BuildingUtils::fillRandom($level, new Vector3($x, $y, $z + 1), new Vector3($x + $length, $y, $z + 1), Block::get(Block::VINE), $this->random);
+				BuildingUtils::fillRandom($level, new Vector3($x, $y, $z - 1), new Vector3($x + $length, $y, $z - 1), Block::get(Block::VINE), $this->random);
 			break;
 		}
 
 		// Second call to build the last wood block
 		switch($this->direction){
 			case 1:
-				$level->setBlockIdAt($x, $y, $z + $this->length + 2, $this->tree->trunkBlock);
-				$level->setBlockDataAt($x, $y, $z + $this->length + 2, $this->tree->type);
+				$level->setBlockIdAt($x, $y, $z + $length + 2, $this->tree->trunkBlock);
+				$level->setBlockDataAt($x, $y, $z + $length + 2, $this->tree->type);
 			break;
 
 			case 3:
-				$level->setBlockIdAt($x + $this->length + 2, $y, $z, $this->tree->trunkBlock);
-				$level->setBlockDataAt($x + $this->length + 2, $y, $z, $this->tree->type);
+				$level->setBlockIdAt($x + $length + 2, $y, $z, $this->tree->trunkBlock);
+				$level->setBlockDataAt($x + $length + 2, $y, $z, $this->tree->type);
 			break;
 		}
 	}

@@ -23,6 +23,8 @@ use pocketmine\block\Block;
 use pocketmine\level\ChunkManager;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use function in_array;
+use function intval;
 
 class BuildingUtils{
 
@@ -247,9 +249,15 @@ class BuildingUtils{
 			for($y = $pos->y - ($infos->y / 2); $y <= $pos->y + ($infos->y / 2); $y++){
 				for($z = $pos->z - ($infos->z / 2); $z <= $pos->z + ($infos->z / 2); $z++){
 					// if(abs((abs($x) - abs($pos->x)) ** 2 +($y - $pos->y) ** 2 +(abs($z) - abs($pos->z)) ** 2) <(abs($infos->x / 2 + $xBounded) + abs($infos->y / 2 + $yBounded) + abs($infos->z / 2 + $zBounded)) ** 2
-					if(abs((abs($x) - abs($pos->x)) ** 2 + ($y - $pos->y) ** 2 + (abs($z) - abs($pos->z)) ** 2) < ((($infos->x / 2 - $xBounded) + ($infos->y / 2 - $yBounded) + ($infos->z / 2 - $zBounded)) / 3) ** 2 && $y > 0 && !in_array($level->getBlockIdAt($x, $y, $z), self::TO_NOT_OVERWRITE) && !in_array($level->getBlockIdAt($x, $y + 1, $z), self::TO_NOT_OVERWRITE)){
-						$level->setBlockIdAt($x, $y, $z, $block->getId());
-						$level->setBlockDataAt($x, $y, $z, $block->getDamage());
+					if(abs((abs($x) - abs($pos->x)) ** 2 + ($y - $pos->y) ** 2 + (abs($z) - abs($pos->z)) ** 2) < ((($infos->x / 2 - $xBounded) + ($infos->y / 2 - $yBounded) + ($infos->z / 2 - $zBounded)) / 3) ** 2 && $y > 0){
+						$x = intval($x);
+						$y = intval($y);
+						$z = intval($z);
+
+						if(!in_array($level->getBlockIdAt($x, $y, $z), self::TO_NOT_OVERWRITE) && !in_array($level->getBlockIdAt($x, $y + 1, $z), self::TO_NOT_OVERWRITE)){
+							$level->setBlockIdAt($x, $y, $z, $block->getId());
+							$level->setBlockDataAt($x, $y, $z, $block->getDamage());
+						}
 					}
 				}
 			}

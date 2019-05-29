@@ -24,7 +24,6 @@ use pocketmine\block\Block;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\PopulatorObject;
 use pocketmine\level\generator\object\Tree as ObjectTree;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
@@ -86,7 +85,7 @@ class FallenTree extends PopulatorObject{
 			case 1:// Z+
 				$return = array_merge(
 					BuildingUtils::fillCallback(new Vector3($x, $y, $z), new Vector3($x, $y, $z + $this->length),
-						function($v3, Level $level){
+						function($v3, ChunkManager $level){
 							if(!isset(self::$overridable[$level->getBlockIdAt($v3->x, $v3->y, $v3->z)])){
 								//echo "$v3 is not overwritable (" . $level->getBlockIdAt($v3->x, $v3->y, $v3->z) . ").\n";
 								return false;
@@ -98,7 +97,7 @@ class FallenTree extends PopulatorObject{
 					),
 
 					BuildingUtils::fillCallback(new Vector3($x, $y - 1, $z), new Vector3($x, $y - 1, $z + $this->length),
-						function($v3, Level $level){
+						function($v3, ChunkManager $level){
 							if(isset(self::$overridable[$level->getBlockIdAt($v3->x, $v3->y, $v3->z)])){
 								//echo "$v3 is overwritable (" . $level->getBlockIdAt($v3->x, $v3->y, $v3->z) . ").\n";
 								return false;
@@ -119,7 +118,7 @@ class FallenTree extends PopulatorObject{
 			case 3: // X+
 				$return = array_merge(
 					BuildingUtils::fillCallback(new Vector3($x, $y, $z), new Vector3($x + $this->length, $y, $z),
-						function($v3, Level $level){
+						function($v3, ChunkManager $level){
 							if(!isset(self::$overridable[$level->getBlockIdAt($v3->x, $v3->y, $v3->z)])){
 								//echo "$v3 is not overwritable (" . $level->getBlockIdAt($v3->x, $v3->y, $v3->z) . ").\n";
 								return false;
@@ -131,7 +130,7 @@ class FallenTree extends PopulatorObject{
 					),
 
 					BuildingUtils::fillCallback(new Vector3($x, $y - 1, $z), new Vector3($x + $this->length, $y - 1, $z),
-						function($v3, Level $level){
+						function($v3, ChunkManager $level){
 							if(isset(self::$overridable[$level->getBlockIdAt($v3->x, $v3->y, $v3->z)])){
 								//echo "$v3 is overwritable (" . $level->getBlockIdAt($v3->x, $v3->y, $v3->z) . ").\n";
 								return false;

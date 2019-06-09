@@ -1,20 +1,22 @@
-<?php 
+<?php
+declare(strict_types = 1);
+
 /**
- *  ____             __     __                    ____                       
- * /\  _`\          /\ \__ /\ \__                /\  _`\                     
- * \ \ \L\ \     __ \ \ ,_\\ \ ,_\     __   _ __ \ \ \L\_\     __     ___    
- *  \ \  _ <'  /'__`\\ \ \/ \ \ \/   /'__`\/\`'__\\ \ \L_L   /'__`\ /' _ `\  
- *   \ \ \L\ \/\  __/ \ \ \_ \ \ \_ /\  __/\ \ \/  \ \ \/, \/\  __/ /\ \/\ \ 
+ *  ____             __     __                    ____
+ * /\  _`\          /\ \__ /\ \__                /\  _`\
+ * \ \ \L\ \     __ \ \ ,_\\ \ ,_\     __   _ __ \ \ \L\_\     __     ___
+ *  \ \  _ <'  /'__`\\ \ \/ \ \ \/   /'__`\/\`'__\\ \ \L_L   /'__`\ /' _ `\
+ *   \ \ \L\ \/\  __/ \ \ \_ \ \ \_ /\  __/\ \ \/  \ \ \/, \/\  __/ /\ \/\ \
  *    \ \____/\ \____\ \ \__\ \ \__\\ \____\\ \_\   \ \____/\ \____\\ \_\ \_\
  *     \/___/  \/____/  \/__/  \/__/ \/____/ \/_/    \/___/  \/____/ \/_/\/_/
+ *
  * Tomorrow's pocketmine generator.
- * @author Ad5001 <mail@ad5001.eu>, XenialDan <https://github.com/thebigsmileXD>
- * @link https://github.com/Ad5001/BetterGen
+ *
+ * @author   Ad5001 <mail@ad5001.eu>, XenialDan <https://github.com/thebigsmileXD>
+ * @link     https://github.com/Ad5001/BetterGen
  * @category World Generator
- * @api 3.0.0
- * @version 1.1
  */
- 
+
 namespace Ad5001\BetterGen\populator;
 
 use Ad5001\BetterGen\generator\BetterNormal;
@@ -31,8 +33,10 @@ use pocketmine\level\generator\populator\Ore;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use function intval;
 
-class FloatingIslandPopulator extends AmountPopulator {
+class FloatingIslandPopulator extends AmountPopulator{
+
 	/** @var ChunkManager */
 	protected $level;
 
@@ -40,14 +44,14 @@ class FloatingIslandPopulator extends AmountPopulator {
 	 * Populates the chunk
 	 *
 	 * @param ChunkManager $level
-	 * @param int $chunkX
-	 * @param int $chunkZ
-	 * @param Random $random
+	 * @param int          $chunkX
+	 * @param int          $chunkZ
+	 * @param Random       $random
 	 * @return void
 	 */
-	public function populate(ChunkManager $level, $chunkX, $chunkZ, Random $random) {
+	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random): void{
 		$this->level = $level;
-		if($this->getAmount($random) > 130) {
+		if($this->getAmount($random) > 130){
 			$x = $random->nextRange(($chunkX << 4), ($chunkX << 4) + 15);
 			$z = $random->nextRange(($chunkX << 4), ($chunkX << 4) + 15);
 			$y = $random->nextRange($this->getHighestWorkableBlock($x, $z) < 96 ? $this->getHighestWorkableBlock($x, $z) + 20 : $this->getHighestWorkableBlock($x, $z), 126);
@@ -57,10 +61,10 @@ class FloatingIslandPopulator extends AmountPopulator {
 			$chunk = $level->getChunk($chunkX, $chunkZ);
 			$biome = BetterNormal::$biomeById[$chunk->getBiomeId($x % 16, $z % 16)];
 			$populators = $biome->getPopulators();
-			foreach($populators as $populator) {
+			foreach($populators as $populator){
 				$populator->populate($level, $chunkX, $chunkZ, $random);
 			}
-		} 
+		}
 	}
 
 	/**
@@ -71,50 +75,48 @@ class FloatingIslandPopulator extends AmountPopulator {
 	 *
 	 * @return int
 	 */
-	protected function getHighestWorkableBlock($x, $z) {
-		for($y = Level::Y_MAX - 1; $y > 0; -- $y) {
+	protected function getHighestWorkableBlock(int $x, int $z): int{
+		for($y = Level::Y_MAX - 1; $y > 0; --$y){
 			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if ($b === Block::DIRT or $b === Block::GRASS or $b === Block::PODZOL or $b === Block::SAND) {
+			if($b === Block::DIRT or $b === Block::GRASS or $b === Block::PODZOL or $b === Block::SAND){
 				break;
-			} elseif ($b !== 0 and $b !== Block::SNOW_LAYER) {
+			}elseif($b !== 0 and $b !== Block::SNOW_LAYER){
 				return 90;
 			}
 		}
-		
+
 		return ++$y;
 	}
-	
-	
-	
+
 	/**
 	 * Builds an island bottom shape
 	 *
 	 * @param ChunkManager $level
-	 * @param Vector3 $pos
-	 * @param int $radius
-	 * @param Random $random
+	 * @param Vector3      $pos
+	 * @param int          $radius
+	 * @param Random       $random
 	 * @return int Bottom place of the island
 	 */
-	public function buildIslandBottomShape(ChunkManager $level, Vector3 $pos, int $radius, Random $random) {
+	public function buildIslandBottomShape(ChunkManager $level, Vector3 $pos, int $radius, Random $random): int{
 		$pos = $pos->round();
 		$currentLen = 1;
 		$current = 0;
-		for($y = $pos->y - 1; $radius > 0; $y--) {
-			for($x = $pos->x - $radius; $x <= $pos->x + $radius; $x++) {
-				for($z = $pos->z - $radius; $z <= $pos->z + $radius; $z ++) {
-					if(abs(abs($x - $pos->x) ** 2) + abs(abs($z - $pos->z) ** 2) == ($radius ** 2) * 0.67) {
+		for($y = $pos->y - 1; $radius > 0; $y--){
+			for($x = $pos->x - $radius; $x <= $pos->x + $radius; $x++){
+				for($z = $pos->z - $radius; $z <= $pos->z + $radius; $z++){
+					if(abs(abs($x - $pos->x) ** 2) + abs(abs($z - $pos->z) ** 2) == ($radius ** 2) * 0.67){
 						$isEdge = true;
-					} else {
+					}else{
 						$isEdge = false;
 					}
-					if(abs(abs($x - $pos->x) ** 2) + abs(abs($z - $pos->z) ** 2) <= ($radius ** 2) * 0.67 && $y < 128) { 
-						if($chunk = $level->getChunk($x >> 4, $z >> 4)) {
+					if(abs(abs($x - $pos->x) ** 2) + abs(abs($z - $pos->z) ** 2) <= ($radius ** 2) * 0.67 && $y < 128){
+						if($chunk = $level->getChunk($x >> 4, $z >> 4)){
 							$biome = BetterNormal::$biomeById[$chunk->getBiomeId($x % 16, $z % 16)];
 							$block = $biome->getGroundCover()[$pos->y - $y - 1] ?? Block::get(Block::STONE);
 							$block = $block->getId();
-						} elseif($random->nextBoundedInt(5) == 0 && $isEdge) {
+						}elseif($random->nextBoundedInt(5) == 0 && $isEdge){
 							$block = Block::AIR;
-						} else {
+						}else{
 							$block = Block::STONE;
 						}
 						$level->setBlockIdAt($x, $y, $z, $block ?? Block::STONE);
@@ -123,32 +125,38 @@ class FloatingIslandPopulator extends AmountPopulator {
 			}
 			$current++;
 			$hBound = $random->nextFloat();
-			if($current >= $currentLen + $hBound) {
-				if($radius == 0) return $pos->y;
+			if($current >= $currentLen + $hBound){
+				if($radius == 0){
+					return $pos->y;
+				}
 				$current = 0;
 				$currentLen += 0.3 * ($random->nextFloat() + 0.5);
 				$radius--;
 			}
 		}
+
 		return $pos->y - 1 - $y;
 	}
-	
-	
-	
-	
+
 	/**
 	 * Populates the island with ores
 	 *
 	 * @param ChunkManager $level
-	 * @param Vector3 $pos
-	 * @param int $width
-	 * @param int $height
-	 * @param Random $random
+	 * @param Vector3      $pos
+	 * @param int          $width
+	 * @param int          $height
+	 * @param Random       $random
 	 * @return void
 	 */
-	public function populateOres(ChunkManager $level, Vector3 $pos, int $width, int $height, Random $random) {
+	public function populateOres(ChunkManager $level, Vector3 $pos, int $width, int $height, Random $random): void{
 		$ores = new Ore();
-		$ores->setOreTypes([new OreType(new CoalOre(), 20, 16, $pos->y - $height, $pos->y), new OreType(new IronOre(), 20, 8, $pos->y - $height, $pos->y - round($height * 0.75)), new OreType(new RedstoneOre(), 8, 7, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new LapisOre(), 1, 6, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new GoldOre(), 2, 8, $pos->y - $height, $pos->y - round($height / 2)), new OreType(new DiamondOre(), 1, 7, $pos->y - $height, $pos->y - round($height / 4))
+		$ores->setOreTypes([
+			new OreType(new CoalOre(), 20, 16, $pos->y - $height, $pos->y),
+			new OreType(new IronOre(), 20, 8, $pos->y - $height, $pos->y - intval($height * 0.75)),
+			new OreType(new RedstoneOre(), 8, 7, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(new LapisOre(), 1, 6, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(new GoldOre(), 2, 8, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(new DiamondOre(), 1, 7, $pos->y - $height, $pos->y - intval($height / 4))
 		]);
 		$ores->populate($level, $pos->x >> 4, $pos->z >> 4, $random);//x z undefined
 	}

@@ -25,6 +25,7 @@ use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\PopulatorObject;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use Ad5001\BetterGen\loot\LootTable;
 use function intval;
 
 class Temple extends PopulatorObject{
@@ -245,10 +246,10 @@ class Temple extends PopulatorObject{
 		$this->placeBlock($x - 2, $y - 10, $z, Block::AIR);
 
 		// Chests
-		/*LootTable::buildLootTable(new Vector3($x, $y - 11, $z + 2), LootTable::LOOT_DESERT_TEMPLE, $random);//TODO: Improve using addon
+		LootTable::buildLootTable(new Vector3($x, $y - 11, $z + 2), LootTable::LOOT_DESERT_TEMPLE, $random);//TODO: Improve using addon
 		LootTable::buildLootTable(new Vector3($x, $y - 11, $z - 2), LootTable::LOOT_DESERT_TEMPLE, $random);
 		LootTable::buildLootTable(new Vector3($x + 2, $y - 11, $z), LootTable::LOOT_DESERT_TEMPLE, $random);
-		LootTable::buildLootTable(new Vector3($x - 2, $y - 11, $z), LootTable::LOOT_DESERT_TEMPLE, $random);*/
+		LootTable::buildLootTable(new Vector3($x - 2, $y - 11, $z), LootTable::LOOT_DESERT_TEMPLE, $random);
 
 		// Entrance is a rectangular parallelepiped
 		switch($this->direction){

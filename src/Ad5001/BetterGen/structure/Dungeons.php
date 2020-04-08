@@ -103,7 +103,7 @@ class Dungeons extends PopulatorObject{
 			}
 		}
 
-		// Setting the spawner
+		// Setting the spawner TODO: Add chest loot
 		$level->setBlockIdAt($x + 5, $y + 2, $z + 5, Block::MOB_SPAWNER);
 	}
 }

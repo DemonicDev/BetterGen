@@ -27,13 +27,17 @@ use pocketmine\block\Block;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
-use pocketmine\event\level\ChunkLoadEvent;
-use pocketmine\event\level\ChunkPopulateEvent;
+use pocketmine\event\world\ChunkLoadEvent;
+
+use pocketmine\event\world\ChunkPopulateEvent;
+
+use pocketmine\world\WorldCreationOptions;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\event\Listener;
-use pocketmine\level\biome\Biome;
-use pocketmine\level\generator\GeneratorManager;
-use pocketmine\level\Level;
-use pocketmine\level\Position;
+use pocketmine\world\biome\Biome;
+use pocketmine\world\generator\GeneratorManager;
+use pocketmine\world\World;
+use pocketmine\world\Position;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -66,6 +70,7 @@ class Main extends PluginBase implements Listener{
 
 	/**
 	 * Save the resources first before enabling the plugin.
+     *
 	 */
 	public function onLoad(): void{
 		@mkdir($this->getDataFolder(). "loots");
@@ -73,16 +78,25 @@ class Main extends PluginBase implements Listener{
 		$this->saveResource("loots/mineshaft.json");
 		$this->saveResource("loots/temple.json");
 		$this->saveResource("processingLoots.json");
+        $generators = [
+            "betternormal" => BetterNormal::class
+        ];
+        foreach($generators as $name => $class) {
+            GeneratorManager::getInstance()->addGenerator($class, $name, fn() => null, true);
+        }
 	}
+
+
+
 
 	/**
 	 * Called when the plugin enables
 	 *
 	 * @return void
+     * addGenerator function moved to onLoad() [By DemonicDev]
 	 */
 	public function onEnable(): void{
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		GeneratorManager::addGenerator(BetterNormal::class, "betternormal");
 	}
 
 	/**
@@ -103,14 +117,16 @@ class Main extends PluginBase implements Listener{
 					break;
 					case 1 : // /createworld <name>
 						$name = $args[0];
-						$generator = GeneratorManager::getGenerator("betternormal");
+                        #Fixed by [DemonicDev]
+						#$generator = GeneratorManager::getInstance()->getGenerator("betternormal");
+						$generator = BetterNormal::class;
 						$generatorName = "betternormal";
 						$seed = $this->generateRandomSeed();
 						$options = [];
 					break;
 					case 2 : // /createworld <name> [generator = betternormal]
 						$name = $args[0];
-						$generator = GeneratorManager::getGenerator($args[1]);
+						$generator = GeneratorManager::getInstance()->getGenerator($args[1]);
 						if(GeneratorManager::getGeneratorName($generator) !== strtolower($args[1])){
 							$sender->sendMessage(self::PREFIX . "§4Could not find generator {$args[1]}. Are you sure it is registered?");
 
@@ -122,7 +138,7 @@ class Main extends PluginBase implements Listener{
 					break;
 					case 3 : // /createworld <name> [generator = betternormal] [seed = rand()]
 						$name = $args[0];
-						$generator = GeneratorManager::getGenerator($args[1]);
+						$generator = GeneratorManager::getInstance()->getGenerator($args[1]);
 						if(GeneratorManager::getGeneratorName($generator) !== strtolower($args[1])){
 							$sender->sendMessage(self::PREFIX . "§4Could not find generator {$args[1]}. Are you sure it is registered?");
 
@@ -140,7 +156,7 @@ class Main extends PluginBase implements Listener{
 					break;
 					default : // /createworld <name> [generator = betternormal] [seed = rand()] [options(json)]
 						$name = $args[0];
-						$generator = GeneratorManager::getGenerator($args[1]);
+						$generator = GeneratorManager::getInstance()->getGenerator($args[1]);
 						if(GeneratorManager::getGeneratorName($generator) !== strtolower($args[1])){
 							$sender->sendMessage(self::PREFIX . "§4Could not find generator {$args[1]}. Are you sure it is registered?");
 
@@ -171,8 +187,12 @@ class Main extends PluginBase implements Listener{
 					$seed = $this->generateRandomSeed();
 				}
 				$this->getServer()->broadcastMessage(Main::PREFIX . "§aGenerating level $name with generator $generatorName and seed $seed..");
-				$this->getServer()->generateLevel($name, $seed, $generator, $options);
-				$this->getServer()->loadLevel($name);
+                $WCO = new WorldCreationOptions();
+                $WCO->setSeed($seed);
+                $WCO->setGeneratorClass($generator);
+                /**  I have to fix somethings with options so i can use it again :)*/
+                $this->getServer()->getWorldManager()->generateWorld($name, $WCO, $backgroundGeneration = true);
+				$this->getServer()->getWorldManager()->loadWorld($name);
 
 				return true;
 			break;
@@ -275,16 +295,17 @@ class Main extends PluginBase implements Listener{
 	 * Loads chest tiles on chest blocks when a chunk is loaded
 	 *
 	 * @param ChunkLoadEvent $event
+     * Updated to API 4 [By DemonicDev] (Added ->getWorldData() )
 	 */
 	public function onChunkLoad(ChunkLoadEvent $event){
-		if($event->getLevel()->getProvider()->getGenerator() === "betternormal"){
+		if($event->getWorld()->getProvider()->getWorldData()->getGenerator() === "betternormal"){
 			$chunk = $event->getChunk();
 			for($x = 0; $x < 16; $x++){
 				for($z = 0; $z < 16; $z++){
-					for($y = 0; $y <= Level::Y_MAX; $y++){
-						$id = $chunk->getBlockId($x, $y, $z);
+					for($y = 0; $y <= World::Y_MAX; $y++){
+						$id = $chunk->getFullBlock($x, $y -1, $z);
 						$tile = $chunk->getTile($x, $y, $z);
-						if($id === Block::CHEST and $tile === null){
+						if($id === VanillaBlocks::CHEST() and $tile === null){
 							Tile::createTile(Tile::CHEST, $event->getLevel(), Chest::createNBT($pos = new Vector3($chunk->getX() * 16 + $x, $y, $chunk->getZ() * 16 + $z), null)); //TODO: set face correctly
 						}
 					}

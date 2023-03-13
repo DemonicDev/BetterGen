@@ -20,22 +20,20 @@ declare(strict_types = 1);
 namespace Ad5001\BetterGen\utils;
 
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
+use pocketmine\world\ChunkManager;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 use function in_array;
 use function intval;
-
+use pocketmine\block\VanillaBlocks;
 class BuildingUtils{
 
 	const TO_NOT_OVERWRITE = [
-		Block::WATER,
-		Block::STILL_WATER,
-		Block::STILL_LAVA,
-		Block::LAVA,
-		Block::BEDROCK,
-		Block::CACTUS,
-		Block::PLANKS
+        9,
+        11,
+        7,
+        81,
+        5
 	];
 
 	/**
@@ -49,7 +47,7 @@ class BuildingUtils{
 	 */
 	public static function fill(ChunkManager $level, Vector3 $pos1, Vector3 $pos2, Block $block = null): void{
 		if($block == null){
-			$block = Block::get(Block::AIR);
+			$block = VanillaBlocks::AIR();
 		}
 
 		list($pos1, $pos2) = self::minmax($pos1, $pos2);
@@ -60,9 +58,10 @@ class BuildingUtils{
 					$x = intval($x);
 					$y = intval($y);
 					$z = intval($z);
-
-					$level->setBlockIdAt($x, $y, $z, $block->getId());
-					$level->setBlockDataAt($x, $y, $z, $block->getDamage());
+                    if(!$x > 16 and !$z > 16) {
+                        $level->setBlockAt($x, $y, $z, $block);
+                    }
+					#$level->setBlockDataAt($x, $y, $z, $block->getDamage());
 				}
 			}
 		}
@@ -264,7 +263,7 @@ class BuildingUtils{
 	 * @param Block        $block
 	 * @return void
 	 */
-	public static function buildRandom(ChunkManager $level, Vector3 $pos, Vector3 $infos, Random $random, Block $block): void{
+	public static function buildRandom(ChunkManager $level, Vector3 $pos, Vector3 $infos, Random $random, block $block): void{
 		$xBounded = $random->nextBoundedInt(3) - 1;
 		$yBounded = $random->nextBoundedInt(3) - 1;
 		$zBounded = $random->nextBoundedInt(3) - 1;
@@ -280,9 +279,11 @@ class BuildingUtils{
 						$y = intval($y);
 						$z = intval($z);
 
-						if(!in_array($level->getBlockIdAt($x, $y, $z), self::TO_NOT_OVERWRITE) && !in_array($level->getBlockIdAt($x, $y + 1, $z), self::TO_NOT_OVERWRITE)){
-							$level->setBlockIdAt($x, $y, $z, $block->getId());
-							$level->setBlockDataAt($x, $y, $z, $block->getDamage());
+						if(!in_array($level->getBlockAt($x, $y, $z)->getId(), self::TO_NOT_OVERWRITE) && !in_array($level->getBlockAt($x, $y + 1, $z)->getId(), self::TO_NOT_OVERWRITE)){
+							if(!$x > 16 and !$z > 16) {
+                                $level->setBlockAt($x, $y, $z, $block);
+                            }
+							//$level->setBlockDataAt($x, $y, $z, $block->getDamage());
 						}
 					}
 				}

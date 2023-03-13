@@ -23,9 +23,11 @@ use Ad5001\BetterGen\generator\BetterNormal;
 use Ad5001\BetterGen\populator\IglooPopulator;
 use Ad5001\BetterGen\utils\CommonUtils;
 use pocketmine\block\Block;
-use pocketmine\level\biome\Biome;
-use pocketmine\level\biome\SnowyBiome;
-use pocketmine\level\generator\populator\TallGrass;
+use pocketmine\world\biome\Biome;
+use pocketmine\world\biome\SnowyBiome;
+use pocketmine\world\generator\populator\TallGrass;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\data\bedrock\BiomeIds;
 
 class BetterIcePlains extends SnowyBiome implements Mountainable{
 
@@ -36,11 +38,11 @@ class BetterIcePlains extends SnowyBiome implements Mountainable{
 		parent::__construct();
 
 		$this->setGroundCover([
-			Block::get(Block::SNOW, 0),
-			Block::get(Block::GRASS, 0),
-			Block::get(Block::DIRT, 0),
-			Block::get(Block::DIRT, 0),
-			Block::get(Block::DIRT, 0)
+            VanillaBlocks::SNOW(),
+            VanillaBlocks::GRASS(),
+            VanillaBlocks::DIRT(),
+            VanillaBlocks::DIRT(),
+            VanillaBlocks::DIRT()
 		]);
 
 		if(!CommonUtils::in_arrayi("Igloos", BetterNormal::$options["delStruct"])){
@@ -74,6 +76,6 @@ class BetterIcePlains extends SnowyBiome implements Mountainable{
 	 * @return int biome id
 	 */
 	public function getId(): int{
-		return Biome::ICE_PLAINS;
+		return BiomeIds::ICE_PLAINS;
 	}
 }

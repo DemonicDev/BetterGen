@@ -22,11 +22,12 @@ namespace Ad5001\BetterGen\populator;
 use Ad5001\BetterGen\utils\BuildingUtils;
 use Generator;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 use function intval;
+use pocketmine\block\VanillaBlocks;
 
 class CavePopulator extends AmountPopulator{
 
@@ -63,11 +64,11 @@ class CavePopulator extends AmountPopulator{
 			$x = $random->nextRange($chunkX << 4, ($chunkX << 4) + 15);
 			$z = $random->nextRange($chunkZ << 4, ($chunkZ << 4) + 15);
 			$y = $random->nextRange(10, $this->getHighestWorkableBlock($x, $z));
-			if($level->getBlockIdAt($x, $y, $z) == Block::STONE && ($level->getBlockIdAt($x + 1, $y, $z) == Block::AIR || $level->getBlockIdAt($x - 1, $y, $z) == Block::AIR || $level->getBlockIdAt($x, $y, $z + 1) == Block::AIR || $level->getBlockIdAt($x, $y, $z - 1) == Block::AIR) && $level->getBlockIdAt($x, $y - 1, $z) !== Block::AIR && $level->getBlockIdAt($x, $y + 1, $z) !== Block::AIR){
+			if($level->getBlockAt($x, $y, $z)->getId() == VanillaBlocks::STONE()->getId() && ($level->getBlockAt($x + 1, $y, $z)->getId() == VanillaBlocks::AIR()->getId() || $level->getBlockAt($x - 1, $y, $z)->getId() == VanillaBlocks::AIR()->getId() || $level->getBlockAt($x, $y, $z + 1)->getId() == VanillaBlocks::AIR()->getId() || $level->getBlockAt($x, $y, $z - 1)->getId() == VanillaBlocks::AIR()->getId()) && $level->getBlockAt($x, $y - 1, $z)->getId() !== VanillaBlocks::AIR()->getId() && $level->getBlockAt($x, $y + 1, $z)->getId() !== VanillaBlocks::AIR()->getId()){
 				if($y < 40 && $random->nextBoolean()){
-					$level->setBlockIdAt($x, $y, $z, Block::LAVA);
+					$level->setBlockAt($x, $y, $z, VanillaBlocks::LAVA());
 				}else{
-					$level->setBlockIdAt($x, $y, $z, Block::WATER);
+					$level->setBlockAt($x, $y, $z, VanillaBlocks::WATER());
 				}
 			}
 		}
@@ -82,11 +83,11 @@ class CavePopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z): int{
-		for($y = Level::Y_MAX - 1; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b === Block::DIRT or $b === Block::GRASS or $b === Block::PODZOL or $b === Block::SAND or $b === Block::SNOW_BLOCK or $b === Block::SANDSTONE){
+		for($y = World::Y_MAX - 1; $y > 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b === VanillaBlocks::DIRT()->getId() or $b === VanillaBlocks::GRASS()->getId() or $b === VanillaBlocks::PODZOL()->getId() or $b === VanillaBlocks::SAND()->getId() or $b === VanillaBlocks::SNOW()->getId() or $b === VanillaBlocks::SANDSTONE()->getId()){
 				break;
-			}elseif($b !== 0 and $b !== Block::SNOW_LAYER and $b !== Block::WATER){
+			}elseif($b !== 0 and $b !== VanillaBlocks::SNOW_LAYER()->getId() and $b !== VanillaBlocks::WATER()->getId()){
 				return -1;
 			}
 		}
@@ -132,7 +133,7 @@ class CavePopulator extends AmountPopulator{
 	public function generateBranch(int $x, int $y, int $z, int $length, int $height, int $depth, Random $random): ?Generator{
 		if(!(yield new Vector3($x, $y, $z))){
 			for($i = 0; $i <= 4; $i++){
-				BuildingUtils::buildRandom($this->level, new Vector3($x, $y, $z), new Vector3($length - $i, $height - $i, $depth - $i), $random, Block::get(Block::AIR));
+				BuildingUtils::buildRandom($this->level, new Vector3($x, $y, $z), new Vector3($length - $i, $height - $i, $depth - $i), $random, VanillaBlocks::AIR());
 				$x += intval((($random->nextBoundedInt(intval(30 * ($length / 10)) + 1)) / 10 - 2));
 				$yP = $random->nextRange(-14, 14);
 
@@ -153,7 +154,7 @@ class CavePopulator extends AmountPopulator{
 		$repeat = $random->nextBoundedInt(25) + 15;
 
 		while($repeat-- > 0){
-			BuildingUtils::buildRandom($this->level, new Vector3($x, $y, $z), new Vector3($length, $height, $depth), $random, Block::get(Block::AIR));
+			BuildingUtils::buildRandom($this->level, new Vector3($x, $y, $z), new Vector3($length, $height, $depth), $random, VanillaBlocks::AIR());
 			$x += intval(($random->nextBoundedInt(intval(30 * ($length / 10)) + 1) / 10 - 2));
 			$yP = $random->nextRange(-14, 14);
 

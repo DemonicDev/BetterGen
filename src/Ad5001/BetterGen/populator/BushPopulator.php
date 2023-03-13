@@ -21,9 +21,10 @@ namespace Ad5001\BetterGen\populator;
 
 use Ad5001\BetterGen\structure\Bush;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\utils\Random;
+use pocketmine\block\VanillaBlocks;
 
 class BushPopulator extends AmountPopulator{
 
@@ -76,11 +77,11 @@ class BushPopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z){
-		for($y = Level::Y_MAX - 1; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b === Block::DIRT or $b === Block::GRASS or $b === Block::PODZOL){
+		for($y = World::Y_MAX - 1; $y > 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b === VanillaBlocks::DIRT() or $b === VanillaBlocks::GRASS() or $b === VanillaBlocks::PODZOL()){
 				break;
-			}elseif($b !== 0 and $b !== Block::SNOW_LAYER){
+			}elseif($b !== 0 and $b !== VanillaBlocks::SNOW_LAYER()){
 				return -1;
 			}
 		}

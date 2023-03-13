@@ -20,11 +20,11 @@ declare(strict_types = 1);
 namespace Ad5001\BetterGen\structure;
 
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\PopulatorObject;
+use pocketmine\world\ChunkManager;
 use pocketmine\utils\Random;
+use pocketmine\block\VanillaBlocks;
 
-class Cactus extends PopulatorObject{
+class Cactus{
 
 	/** @var int */
 	protected $totalHeight;
@@ -41,9 +41,9 @@ class Cactus extends PopulatorObject{
 	 */
 	public function canPlaceObject(ChunkManager $level, int $x, int $y, int $z, Random $random): bool{
 		$this->totalHeight = 1 + $random->nextBoundedInt(3);
-		$below = $level->getBlockIdAt($x, $y - 1, $z);
+		$below = $level->getBlockAt($x, $y - 1, $z)->getId();
 		for($yy = $y; $yy <= $y + $this->totalHeight; $yy++){
-			if($level->getBlockIdAt($x, $yy, $z) !== Block::AIR || ($below !== Block::SAND && $below !== Block::CACTUS) || ($level->getBlockIdAt($x - 1, $yy, $z) !== Block::AIR || $level->getBlockIdAt($x + 1, $yy, $z) !== Block::AIR || $level->getBlockIdAt($x, $yy, $z - 1) !== Block::AIR || $level->getBlockIdAt($x, $yy, $z + 1) !== Block::AIR)){
+			if($level->getBlockAt($x, $yy, $z) !== VanillaBlocks::AIR() || ($below !== VanillaBlocks::SAND() && $below !== VanillaBlocks::CACTUS()) || ($level->getBlockAt($x - 1, $yy, $z) !== VanillaBlocks::AIR() || $level->getBlockAt($x + 1, $yy, $z) !== VanillaBlocks::AIR() || $level->getBlockAt($x, $yy, $z - 1) !== VanillaBlocks::AIR() || $level->getBlockAt($x, $yy, $z + 1) !== VanillaBlocks::AIR())){
 				return false;
 			}
 		}

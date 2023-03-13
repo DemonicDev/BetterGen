@@ -21,9 +21,10 @@ namespace Ad5001\BetterGen\populator;
 
 use Ad5001\BetterGen\structure\Cactus;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\utils\Random;
+use pocketmine\block\VanillaBlocks;
 
 class CactusPopulator extends AmountPopulator{
 
@@ -47,10 +48,10 @@ class CactusPopulator extends AmountPopulator{
 	 * @param Random       $random
 	 * @return void
 	 */
-	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random){
+	public function populate(ChunkManager $level, int $chunkX, int $chunkZ, Random $random): void{
 		$this->level = $level;
 		$amount = $this->getAmount($random);
-		$cactus = new Cactus ();
+		$cactus = new Cactus();
 		for($i = 0; $i < $amount; $i++){
 			$x = $random->nextRange($chunkX * 16, $chunkX * 16 + 15);
 			$z = $random->nextRange($chunkZ * 16, $chunkZ * 16 + 15);
@@ -70,9 +71,9 @@ class CactusPopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z){
-		for($y = Level::Y_MAX - 1; $y >= 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b !== Block::AIR and $b !== Block::LEAVES and $b !== Block::LEAVES2){
+		for($y = World::Y_MAX - 1; $y >= 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b !== 0 and $b !== 18 and $b !== 161){
 				break;
 			}
 		}

@@ -27,14 +27,14 @@ use pocketmine\block\GoldOre;
 use pocketmine\block\IronOre;
 use pocketmine\block\LapisOre;
 use pocketmine\block\RedstoneOre;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\OreType;
-use pocketmine\level\generator\populator\Ore;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\generator\object\OreType;
+use pocketmine\world\generator\populator\Ore;
+use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 use function intval;
-
+use pocketmine\block\VanillaBlocks;
 class FloatingIslandPopulator extends AmountPopulator{
 
 	/** @var ChunkManager */
@@ -76,11 +76,11 @@ class FloatingIslandPopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z): int{
-		for($y = Level::Y_MAX - 1; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b === Block::DIRT or $b === Block::GRASS or $b === Block::PODZOL or $b === Block::SAND){
+		for($y = World::Y_MAX - 1; $y > 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b === VanillaBlocks::DIRT() or $b === VanillaBlocks::GRASS() or $b === VanillaBlocks::PODZOL() or $b === VanillaBlocks::SAND()){
 				break;
-			}elseif($b !== 0 and $b !== Block::SNOW_LAYER){
+			}elseif($b !== 0 and $b !== VanillaBlocks::SNOW_LAYER()){
 				return 90;
 			}
 		}
@@ -112,14 +112,16 @@ class FloatingIslandPopulator extends AmountPopulator{
 					if(abs(abs($x - $pos->x) ** 2) + abs(abs($z - $pos->z) ** 2) <= ($radius ** 2) * 0.67 && $y < 128){
 						if($chunk = $level->getChunk($x >> 4, $z >> 4)){
 							$biome = BetterNormal::$biomeById[$chunk->getBiomeId($x % 16, $z % 16)];
-							$block = $biome->getGroundCover()[$pos->y - $y - 1] ?? Block::get(Block::STONE);
+							$block = $biome->getGroundCover()[$pos->y - $y - 1] ?? VanillaBlocks::STONE();
 							$block = $block->getId();
 						}elseif($random->nextBoundedInt(5) == 0 && $isEdge){
-							$block = Block::AIR;
+							$block = VanillaBlocks::AIR();
 						}else{
-							$block = Block::STONE;
+							$block = VanillaBlocks::STONE();
 						}
-						$level->setBlockIdAt($x, $y, $z, $block ?? Block::STONE);
+                        if(!$x > 16 and !$z > 16) {
+                            $level->setBlockAt($x, $y, $z, $block ?? VanillaBlocks::STONE())->getId();
+                        }
 					}
 				}
 			}
@@ -150,13 +152,14 @@ class FloatingIslandPopulator extends AmountPopulator{
 	 */
 	public function populateOres(ChunkManager $level, Vector3 $pos, int $width, int $height, Random $random): void{
 		$ores = new Ore();
+        $stone = VanillaBlocks::STONE();
 		$ores->setOreTypes([
-			new OreType(new CoalOre(), 20, 16, $pos->y - $height, $pos->y),
-			new OreType(new IronOre(), 20, 8, $pos->y - $height, $pos->y - intval($height * 0.75)),
-			new OreType(new RedstoneOre(), 8, 7, $pos->y - $height, $pos->y - intval($height / 2)),
-			new OreType(new LapisOre(), 1, 6, $pos->y - $height, $pos->y - intval($height / 2)),
-			new OreType(new GoldOre(), 2, 8, $pos->y - $height, $pos->y - intval($height / 2)),
-			new OreType(new DiamondOre(), 1, 7, $pos->y - $height, $pos->y - intval($height / 4))
+			new OreType(VanillaBlocks::COAL_ORE(), $stone, 20, 16, $pos->y - $height, $pos->y),
+			new OreType(VanillaBlocks::IRON_ORE(), $stone, 20, 8, $pos->y - $height, $pos->y - intval($height * 0.75)),
+			new OreType(VanillaBlocks::REDSTONE_ORE(), $stone, 8, 7, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(VanillaBlocks::LAPIS_LAZULI_ORE(), $stone, 1, 6, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(VanillaBlocks::GOLD_ORE(), $stone, 2, 8, $pos->y - $height, $pos->y - intval($height / 2)),
+			new OreType(VanillaBlocks::DIAMOND_ORE(), $stone, 1, 7, $pos->y - $height, $pos->y - intval($height / 4))
 		]);
 		$ores->populate($level, $pos->x >> 4, $pos->z >> 4, $random);//x z undefined
 	}

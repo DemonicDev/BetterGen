@@ -20,11 +20,12 @@ declare(strict_types = 1);
 namespace Ad5001\BetterGen\populator;
 
 use pocketmine\block\Block;
-use pocketmine\level\biome\Biome;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\biome\Biome;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\utils\Random;
-
+use pocketmine\data\bedrock\BiomeIds;
+use pocketmine\block\VanillaBlocks;
 class DeadbushPopulator extends AmountPopulator{
 
 	/** @var ChunkManager */
@@ -48,15 +49,17 @@ class DeadbushPopulator extends AmountPopulator{
 			if(!in_array($level->getChunk($chunkX, $chunkZ)->getBiomeId(abs($x % 16), ($z % 16)), [
 				40,
 				39,
-				Biome::DESERT
+				BiomeIds::DESERT
 			])
 			){
 				continue;
 			}
 			$y = $this->getHighestWorkableBlock($x, $z);
-			if($y !== -1 && $level->getBlockIdAt($x, $y - 1, $z) == Block::SAND){
-				$level->setBlockIdAt($x, $y, $z, Block::DEAD_BUSH);
-				$level->setBlockDataAt($x, $y, $z, 1);
+			if($y !== -1 && $level->getBlockAt($x, $y - 1, $z) == VanillaBlocks::SAND()){
+                if(!$x > 16 and !$z > 16) {
+                    $level->setBlockAt($x, $y, $z, Block::DEAD_BUSH());
+                }
+				#$level->setBlockDataAt($x, $y, $z, 1);
 			}
 		}
 	}
@@ -69,11 +72,11 @@ class DeadbushPopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z): int{
-		for($y = Level::Y_MAX - 1; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b === Block::DIRT or $b === Block::GRASS or $b === Block::SAND or $b === Block::SANDSTONE or $b === Block::HARDENED_CLAY or $b === Block::STAINED_HARDENED_CLAY){
+		for($y = World::Y_MAX - 1; $y > 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b === 3 or $b === 2 or $b === 12 or $b === 24 or $b === 159 or $b === 172){
 				break;
-			}elseif($b !== Block::AIR){
+			}elseif($b !== 0){
 				return -1;
 			}
 		}

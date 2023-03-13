@@ -19,9 +19,9 @@ declare(strict_types = 1);
 
 namespace Ad5001\BetterGen\generator;
 
-use pocketmine\level\biome\Biome;
-use pocketmine\level\generator\biome\BiomeSelector;
-use pocketmine\level\generator\noise\Simplex;
+use pocketmine\world\biome\Biome;
+use pocketmine\world\generator\biome\BiomeSelector;
+use pocketmine\world\generator\noise\Simplex;
 use pocketmine\utils\Random;
 
 class BetterBiomeSelector extends BiomeSelector{
@@ -96,7 +96,7 @@ class BetterBiomeSelector extends BiomeSelector{
 	 *
 	 * @return float|int
 	 */
-	public function getTemperature($x, $z){
+	public function getTemperature(float $x,float $z): float{
 		return ($this->temperature->noise2D($x, $z, true) + 1) / 2;
 	}
 
@@ -108,7 +108,7 @@ class BetterBiomeSelector extends BiomeSelector{
 	 *
 	 * @return float|int
 	 */
-	public function getRainfall($x, $z){
+	public function getRainfall(float $x,float $z): float{
 		return ($this->rainfall->noise2D($x, $z, true) + 1) / 2;
 	}
 

@@ -21,19 +21,19 @@ namespace Ad5001\BetterGen\structure;
 
 use Ad5001\BetterGen\utils\BuildingUtils;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\PopulatorObject;
+use pocketmine\world\ChunkManager;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
+use pocketmine\block\VanillaBlocks;
 
-class Dungeons extends PopulatorObject{
+class Dungeons{
 
 	/** @var array */
 	public $overridable = [
-		Block::AIR => true,
-		Block::WOOD => true,
-		Block::SNOW_LAYER => true,
-		Block::LOG2 => true
+        0 => true,
+		467 => true,
+		78 => true,
+		162 => true
 	];
 
 	/** @var int */
@@ -60,30 +60,30 @@ class Dungeons extends PopulatorObject{
 		for($y = $pos1->y; $y >= $pos2->y; $y--){
 			for($x = $pos1->x; $x >= $pos2->x; $x--){
 				for($z = $pos1->z; $z >= $pos2->z; $z--){ // Cleaning the area first
-					$level->setBlockIdAt($x, $y, $z, Block::AIR);
+					$level->setBlockAt($x, $y, $z,  VanillaBlocks::AIR());
 				}
 				// Starting random walls.
 				if($random->nextBoolean()){
-					$level->setBlockIdAt($x, $y, $pos1->z, Block::MOSS_STONE);
+					$level->setBlockAt($x, $y, $pos1->z, VanillaBlocks::MOSSY_COBBLESTONE());
 				}else{
-					$level->setBlockIdAt($x, $y, $pos1->z, Block::COBBLESTONE);
+					$level->setBlockAt($x, $y, $pos1->z, VanillaBlocks::COBBLESTONE());
 				}
 				if($random->nextBoolean()){
-					$level->setBlockIdAt($x, $y, $pos2->z, Block::MOSS_STONE);
+					$level->setBlockAt($x, $y, $pos2->z, VanillaBlocks::MOSSY_COBBLESTONE());
 				}else{
-					$level->setBlockIdAt($x, $y, $pos2->z, Block::COBBLESTONE);
+					$level->setBlockAt($x, $y, $pos2->z, VanillaBlocks::COBBLESTONE());
 				}
 			}
 			for($z = $pos1->z; $z >= $pos2->z; $z--){
 				if($random->nextBoolean()){
-					$level->setBlockIdAt($pos1->x, $y, $z, Block::MOSS_STONE);
+					$level->setBlockAt($pos1->x, $y, $z, VanillaBlocks::MOSSY_COBBLESTONE());
 				}else{
-					$level->setBlockIdAt($pos1->x, $y, $z, Block::COBBLESTONE);
+					$level->setBlockAt($pos1->x, $y, $z, VanillaBlocks::COBBLESTONE());
 				}
 				if($random->nextBoolean()){
-					$level->setBlockIdAt($pos2->x, $y, $z, Block::MOSS_STONE);
+					$level->setBlockAt($pos2->x, $y, $z, VanillaBlocks::MOSSY_COBBLESTONE());
 				}else{
-					$level->setBlockIdAt($pos2->x, $y, $z, Block::COBBLESTONE);
+					$level->setBlockAt($pos2->x, $y, $z, VanillaBlocks::COBBLESTONE());
 				}
 			}
 		}
@@ -91,19 +91,19 @@ class Dungeons extends PopulatorObject{
 		for($x = $pos1->x; $x >= $pos2->x; $x--){
 			for($z = $pos1->z; $z >= $pos2->z; $z--){
 				if($random->nextBoolean()){
-					$level->setBlockIdAt($x, $pos1->y, $z, Block::MOSS_STONE);
+					$level->setBlockAt($x, $pos1->y, $z, VanillaBlocks::MOSSY_COBBLESTONE());
 				}else{
-					$level->setBlockIdAt($x, $pos1->y, $z, Block::COBBLESTONE);
+					$level->setBlockAt($x, $pos1->y, $z, VanillaBlocks::COBBLESTONE());
 				}
 				if($random->nextBoolean()){
-					$level->setBlockIdAt($x, $pos2->y, $z, Block::MOSS_STONE);
+					$level->setBlockAt($x, $pos2->y, $z, VanillaBlocks::MOSSY_COBBLESTONE());
 				}else{
-					$level->setBlockIdAt($x, $pos2->y, $z, Block::COBBLESTONE);
+					$level->setBlockAt($x, $pos2->y, $z, VanillaBlocks::COBBLESTONE());
 				}
 			}
 		}
 
 		// Setting the spawner TODO: Add chest loot
-		$level->setBlockIdAt($x + 5, $y + 2, $z + 5, Block::MOB_SPAWNER);
+		$level->setBlockAt($x + 5, $y + 2, $z + 5, VanillaBlocks::MOB_SPAWNER());
 	}
 }

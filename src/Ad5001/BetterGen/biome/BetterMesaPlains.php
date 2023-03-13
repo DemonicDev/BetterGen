@@ -25,9 +25,11 @@ use Ad5001\BetterGen\populator\SugarCanePopulator;
 use Ad5001\BetterGen\utils\CommonUtils;
 use pocketmine\block\Block;
 use pocketmine\block\GoldOre;
-use pocketmine\level\biome\SandyBiome;
-use pocketmine\level\generator\object\OreType;
-use pocketmine\level\generator\populator\Ore;
+use pocketmine\world\biome\SandyBiome;
+use pocketmine\world\generator\object\OreType;
+use pocketmine\world\generator\populator\Ore;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\data\bedrock\BiomeIds;
 
 class BetterMesaPlains extends SandyBiome{
 
@@ -49,10 +51,11 @@ class BetterMesaPlains extends SandyBiome{
 		$sugarCane->setRandomAmount(20);
 		$sugarCane->setBaseAmount(3);
 
-		$ores = new Ore();
-		$ores->setOreTypes([
-			new OreType(new GoldOre(), 2, 8, 0, 32)
-		]);
+        $ores = new Ore();
+        $test = VanillaBlocks::RED_SANDSTONE();
+        $ores->setOreTypes([
+            new OreType(VanillaBlocks::GOLD_ORE(), $test, 2, 8, 0, 32)
+        ]);
 
 		if(!CommonUtils::in_arrayi("Cactus", BetterNormal::$options["delStruct"])){
 			$this->addPopulator($cactus);
@@ -75,51 +78,52 @@ class BetterMesaPlains extends SandyBiome{
 		$this->rainfall = 0;
 
 		$this->setGroundCover([
-			Block::get(Block::SAND, 1),
-			Block::get(Block::SAND, 1),
-			Block::get(Block::HARDENED_CLAY, 0),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::HARDENED_CLAY, 0),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 7),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::HARDENED_CLAY, 0),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 12),
-			Block::get(Block::STAINED_HARDENED_CLAY, 12),
-			Block::get(Block::STAINED_HARDENED_CLAY, 12),
-			Block::get(Block::STAINED_HARDENED_CLAY, 14),
-			Block::get(Block::STAINED_HARDENED_CLAY, 14),
-			Block::get(Block::STAINED_HARDENED_CLAY, 14),
-			Block::get(Block::STAINED_HARDENED_CLAY, 4),
-			Block::get(Block::STAINED_HARDENED_CLAY, 7),
-			Block::get(Block::STAINED_HARDENED_CLAY, 0),
-			Block::get(Block::STAINED_HARDENED_CLAY, 7),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::HARDENED_CLAY, 0),
-			Block::get(Block::HARDENED_CLAY, 0),
-			Block::get(Block::HARDENED_CLAY, 0),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::STAINED_HARDENED_CLAY, 1),
-			Block::get(Block::RED_SANDSTONE, 0),
-			Block::get(Block::RED_SANDSTONE, 0),
-			Block::get(Block::RED_SANDSTONE, 0),
-			Block::get(Block::RED_SANDSTONE, 0),
-			Block::get(Block::RED_SANDSTONE, 0),
-			Block::get(Block::RED_SANDSTONE, 0),
-			Block::get(Block::RED_SANDSTONE, 0),
-			Block::get(Block::RED_SANDSTONE, 0)
+            VanillaBlocks::DIRT(),
+            VanillaBlocks::SAND(),
+            VanillaBlocks::SAND(),
+            VanillaBlocks::CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::CLAY(),
+			VanillaBlocks::CLAY(),
+			VanillaBlocks::CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::STAINED_CLAY(),
+			VanillaBlocks::RED_SANDSTONE(),
+			VanillaBlocks::RED_SANDSTONE(),
+			VanillaBlocks::RED_SANDSTONE(),
+			VanillaBlocks::RED_SANDSTONE(),
+			VanillaBlocks::RED_SANDSTONE(),
+			VanillaBlocks::RED_SANDSTONE(),
+			VanillaBlocks::RED_SANDSTONE(),
+			VanillaBlocks::RED_SANDSTONE()
 		]);
 	}
 

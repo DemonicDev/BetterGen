@@ -22,11 +22,11 @@ namespace Ad5001\BetterGen\populator;
 use Ad5001\BetterGen\loot\LootTable;
 use Ad5001\BetterGen\utils\BuildingUtils;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
-
+use pocketmine\block\VanillaBlocks;
 class MineshaftPopulator extends AmountPopulator{
 
 	/** @var int */
@@ -69,8 +69,8 @@ class MineshaftPopulator extends AmountPopulator{
 		$y = $random->nextRange(5, 50);
 
 		// First filling the large dirt place (center of the mineshaft)
-		BuildingUtils::fill($level, new Vector3($x - 6, $y, $x - 6), new Vector3($x + 6, $y + 8, $z + 6), Block::get(Block::AIR));
-		BuildingUtils::fill($level, new Vector3($x - 6, $y, $x - 6), new Vector3($x + 6, $y, $z + 6), Block::get(Block::DIRT));
+		BuildingUtils::fill($level, new Vector3($x - 6, $y, $x - 6), new Vector3($x + 6, $y + 8, $z + 6), VanillaBlocks::AIR());
+		BuildingUtils::fill($level, new Vector3($x - 6, $y, $x - 6), new Vector3($x + 6, $y, $z + 6), VanillaBlocks::DIRT());
 		$startingPath = $random->nextBoundedInt(4);
 		$this->maxPath = $random->nextBoundedInt(100) + 50;
 		foreach(array_fill(0, $startingPath, 1) as $hey){
@@ -473,9 +473,9 @@ class MineshaftPopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z): int{
-		for($y = Level::Y_MAX - 1; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b === Block::SAND){
+		for($y = World::Y_MAX - 1; $y > 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b === VanillaBlocks::SAND()){
 				break;
 			}
 		}

@@ -21,14 +21,13 @@ namespace Ad5001\BetterGen\structure;
 
 use Ad5001\BetterGen\utils\BuildingUtils;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\PopulatorObject;
+use pocketmine\world\ChunkManager;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 use Ad5001\BetterGen\loot\LootTable;
 use function intval;
-
-class Temple extends PopulatorObject{
+use pocketmine\block\VanillaBlocks;
+class Temple{
 
 	public const DIRECTION_PLUSX = 0;
 	public const DIRECTION_MINX  = 1;

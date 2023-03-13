@@ -20,13 +20,12 @@ declare(strict_types = 1);
 namespace Ad5001\BetterGen\structure;
 
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\PopulatorObject;
+use pocketmine\world\ChunkManager;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 use function intval;
 
-class Bush extends PopulatorObject{
+class Bush{
 
 	/** @var array */
 	public $overridable = [

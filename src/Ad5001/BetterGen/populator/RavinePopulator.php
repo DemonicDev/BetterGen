@@ -21,10 +21,11 @@ namespace Ad5001\BetterGen\populator;
 
 use Ad5001\BetterGen\utils\BuildingUtils;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\utils\Random;
 use function intval;
+use pocketmine\block\VanillaBlocks;
 
 class RavinePopulator extends AmountPopulator{
 
@@ -92,11 +93,11 @@ class RavinePopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z): int{
-		for($y = Level::Y_MAX - 1; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b === Block::DIRT or $b === Block::GRASS or $b === Block::PODZOL or $b === Block::SAND or $b === Block::SNOW_BLOCK or $b === Block::SANDSTONE){
+		for($y = World::Y_MAX - 1; $y > 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b === VanillaBlocks::DIRT() or $b === VanillaBlocks::GRASS() or $b === VanillaBlocks::PODZOL() or $b === VanillaBlocks::SAND() or $b === VanillaBlocks::SNOW() or $b === VanillaBlocks::SANDSTONE()){
 				break;
-			}elseif($b !== 0 and $b !== Block::SNOW_LAYER and $b !== Block::WATER){
+			}elseif($b !== 0 and $b !== VanillaBlocks::SNOW_LAYER() and $b !== VanillaBlocks::WATER()){
 				return -1;
 			}
 		}
@@ -139,8 +140,10 @@ class RavinePopulator extends AmountPopulator{
 					}else{
 						$zBounded = $oldZB;
 					}
-					if(abs((abs($xx) - abs($x)) ** 2 + (abs($zz) - abs($z)) ** 2) < ((($length / 2 - $xBounded) + ($length / 2 - $zBounded)) / 2) ** 2 && $y > 0 && !in_array($this->level->getBlockIdAt(( int) round($xx), (int) round($yy), (int) round($zz)), BuildingUtils::TO_NOT_OVERWRITE) && !in_array($this->level->getBlockIdAt(( int) round($xx), (int) round($yy + 1), (int) round($zz)), BuildingUtils::TO_NOT_OVERWRITE)){
-						$this->level->setBlockIdAt((int) round($xx), (int) round($yy), (int) round($zz), Block::AIR);
+					if(abs((abs($xx) - abs($x)) ** 2 + (abs($zz) - abs($z)) ** 2) < ((($length / 2 - $xBounded) + ($length / 2 - $zBounded)) / 2) ** 2 && $y > 0 && !in_array($this->level->getBlockAt(( int) round($xx), (int) round($yy), (int) round($zz))->getId(), BuildingUtils::TO_NOT_OVERWRITE) && !in_array($this->level->getBlockAt(( int) round($xx), (int) round($yy + 1), (int) round($zz))->getId(), BuildingUtils::TO_NOT_OVERWRITE)){
+                        if(!$x > 16 and !$z > 16) {
+                            $this->level->setBlockAt((int)round($xx), (int)round($yy), (int)round($zz), VanillaBlocks::AIR());
+                        }
 					}
 				}
 			}

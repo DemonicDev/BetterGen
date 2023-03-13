@@ -21,12 +21,12 @@ namespace Ad5001\BetterGen\structure;
 
 use pocketmine\block\Block;
 use pocketmine\block\Wood;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\Tree;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\generator\object\Tree;
 use pocketmine\utils\Random;
 use function intval;
-
-class_alias("pocketmine\\level\\generator\\object\\Tree", "Ad5001\\BetterGen\\structure\\Tree");
+use pocketmine\block\VanillaBlocks;
+class_alias("pocketmine\\world\\generator\\object\\Tree", "Ad5001\\BetterGen\\structure\\Tree");
 
 class SakuraTree extends Tree{
 
@@ -462,9 +462,9 @@ class SakuraTree extends Tree{
 	 * Constructs the class
 	 */
 	public function __construct(){
-		$this->trunkBlock = Block::LOG;
-		$this->leafBlock = Block::AIR; // To remove bushes
-		$this->realLeafBlock = Block::WOOL;
+		$this->trunkBlock = VanillaBlocks::LOG();
+		$this->leafBlock = VanillaBlocks::AIR(); // To remove bushes
+		$this->realLeafBlock = VanillaBlocks::WOOL();
 		$this->leafType = 6;
 		$this->leaf2Type = 0;
 		$this->type = Wood::OAK;

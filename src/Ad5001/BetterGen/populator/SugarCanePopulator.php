@@ -21,8 +21,8 @@ namespace Ad5001\BetterGen\populator;
 
 use Ad5001\BetterGen\structure\SugarCane;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\utils\Random;
 
 class SugarCanePopulator extends AmountPopulator{
@@ -47,7 +47,7 @@ class SugarCanePopulator extends AmountPopulator{
 	 * @param Random       $random
 	 * @return void
 	 */
-	public function populate(ChunkManager $level, $chunkX, $chunkZ, Random $random){
+	public function populate(ChunkManager $level, $chunkX, $chunkZ, Random $random): void{
 		$this->level = $level;
 		$amount = $this->getAmount($random);
 		$sugarcane = new SugarCane ();
@@ -69,9 +69,9 @@ class SugarCanePopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock($x, $z){
-		for($y = Level::Y_MAX - 1; $y >= 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b !== Block::AIR and $b !== Block::LEAVES and $b !== Block::LEAVES2){
+		for($y = World::Y_MAX - 1; $y >= 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z);
+			if($b !== 0 and $b !== 18 and $b !== 161){
 				break;
 			}
 		}

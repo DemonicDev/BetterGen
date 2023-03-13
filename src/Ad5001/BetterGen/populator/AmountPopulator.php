@@ -19,10 +19,9 @@ declare(strict_types = 1);
 
 namespace Ad5001\BetterGen\populator;
 
-use pocketmine\level\generator\populator\Populator;
+use pocketmine\world\generator\populator\Populator;
 use pocketmine\utils\Random;
-
-abstract class AmountPopulator extends Populator{
+abstract class AmountPopulator implements Populator{
 
 	/** @var int */
 	protected $baseAmount = 0;

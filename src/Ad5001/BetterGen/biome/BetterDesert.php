@@ -27,8 +27,10 @@ use Ad5001\BetterGen\populator\TemplePopulator;
 use Ad5001\BetterGen\populator\WellPopulator;
 use Ad5001\BetterGen\utils\CommonUtils;
 use pocketmine\block\Block;
-use pocketmine\level\biome\Biome;
-use pocketmine\level\biome\SandyBiome;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\data\bedrock\BiomeIds;
+use pocketmine\world\biome\Biome;
+use pocketmine\world\biome\SandyBiome;
 
 class BetterDesert extends SandyBiome implements Mountainable{
 
@@ -77,23 +79,23 @@ class BetterDesert extends SandyBiome implements Mountainable{
 		$this->rainfall = 0;
 
 		$this->setGroundCover([
-			Block::get(Block::SAND, 0),
-			Block::get(Block::SAND, 0),
-			Block::get(Block::SAND, 0),
-			Block::get(Block::SAND, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0)
+            VanillaBlocks::SAND(),
+            VanillaBlocks::SAND(),
+            VanillaBlocks::SAND(),
+            VanillaBlocks::SAND(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
+            VanillaBlocks::SANDSTONE(),
 		]);
 	}
 
@@ -112,6 +114,7 @@ class BetterDesert extends SandyBiome implements Mountainable{
 	 * @return int
 	 */
 	public function getId(): int{
-		return Biome::DESERT;
+        #$this->registerBiome(BiomeRegistry::getInstance()->getBiome(BiomeIds::PLAINS));
+		return BiomeIds::DESERT;
 	}
 }

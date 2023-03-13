@@ -1,9 +1,7 @@
----
 name: BetterGen
 main: Ad5001\BetterGen\Main
-api:
-- 3.0.0
-author: Ad5001
+api: [4.0.0]
+author: Ad5001, Api 4.0.0 Update by DemonicEagle143/DemonicDev
 contributors:
 - thebigsmileXD (XenialDan)
 - wyt3dr4g0n
@@ -30,18 +28,15 @@ permissions:
   bettergen:
     default: false
     description: Get access to all the permissions.
-    children:
-      bettergen.command:
-        default: false
-        description: Get access to all the commands.
-        children:
-          bettergen.command.createworld:
-            default: op
-            description: Access to /createworld command.
-          bettergen.command.worldtp:
-            default: op
-            description: Axxess to /worldtp command.
-          bettergen.command.debug:
-            default: op
-            description: Access to debug commands.
-...
+  bettergen.command:
+    default: false
+    description: Get access to all the commands.
+  bettergen.command.createworld:
+    default: op
+    description: Access to /createworld command.
+  bettergen.command.worldtp:
+    default: op
+    description: Axxess to /worldtp command.
+  bettergen.command.debug:
+    default: op
+    description: Access to debug commands.

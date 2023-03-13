@@ -21,9 +21,10 @@ namespace Ad5001\BetterGen\populator;
 
 use Ad5001\BetterGen\structure\FallenTree;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\utils\Random;
+use pocketmine\block\VanillaBlocks;
 
 class FallenTreePopulator extends AmountPopulator{
 
@@ -66,7 +67,7 @@ class FallenTreePopulator extends AmountPopulator{
 			$x = $random->nextRange($chunkX * 16, $chunkX * 16 + 15);
 			$z = $random->nextRange($chunkZ * 16, $chunkZ * 16 + 15);
 			$y = $this->getHighestWorkableBlock($x, $z);
-			if(isset(FallenTree::$overridable[$level->getBlockIdAt($x, $y, $z)])){
+			if(isset(FallenTree::$overridable[$level->getBlockAt($x, $y, $z)->getId()])){
 				$y--;
 			} // Changing $y if 1 block to high.
 			if($y !== -1 and $fallenTree->canPlaceObject($level, $x, $y + 1, $z, $random)){
@@ -83,11 +84,11 @@ class FallenTreePopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z): int{
-		for($y = Level::Y_MAX - 1; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b === Block::DIRT or $b === Block::GRASS){
+		for($y = World::Y_MAX - 1; $y > 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b === VanillaBlocks::DIRT() or $b === VanillaBlocks::GRASS()){
 				break;
-			}elseif($b !== Block::AIR and $b !== Block::SNOW_LAYER){
+			}elseif($b !== VanillaBlocks::AIR() and $b !== VanillaBlocks::SNOW_LAYER()){
 				return -1;
 			}
 		}

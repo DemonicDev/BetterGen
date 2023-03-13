@@ -20,11 +20,10 @@ declare(strict_types = 1);
 namespace Ad5001\BetterGen\structure;
 
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\PopulatorObject;
+use pocketmine\world\ChunkManager;
 use pocketmine\utils\Random;
-
-class SugarCane extends PopulatorObject{
+use pocketmine\block\VanillaBlocks;
+class SugarCane{
 
 	/** @var int */
 	protected $totalHeight;

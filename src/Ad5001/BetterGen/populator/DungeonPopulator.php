@@ -21,9 +21,10 @@ namespace Ad5001\BetterGen\populator;
 
 use Ad5001\BetterGen\structure\Dungeons;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\utils\Random;
+use pocketmine\block\VanillaBlocks;
 
 class DungeonPopulator extends AmountPopulator{
 
@@ -60,11 +61,11 @@ class DungeonPopulator extends AmountPopulator{
 	 * @return int
 	 */
 	protected function getHighestWorkableBlock(int $x, int $z): int{
-		for($y = Level::Y_MAX - 1; $y > 0; --$y){
-			$b = $this->level->getBlockIdAt($x, $y, $z);
-			if($b === Block::DIRT or $b === Block::GRASS or $b === Block::PODZOL or $b === Block::SAND or $b === Block::SNOW_BLOCK or $b === Block::SANDSTONE){
+		for($y = World::Y_MAX - 1; $y > 0; --$y){
+			$b = $this->level->getBlockAt($x, $y, $z)->getId();
+			if($b === VanillaBlocks::DIRT() or $b === VanillaBlocks::GRASS() or $b === VanillaBlocks::PODZOL() or $b === VanillaBlocks::SAND() or $b === VanillaBlocks::SNOW() or $b === VanillaBlocks::SANDSTONE()){
 				break;
-			}elseif($b !== 0 and $b !== Block::SNOW_LAYER and $b !== Block::WATER){
+			}elseif($b !== 0 and $b !== VanillaBlocks::SNOW_LAYER() and $b !== VanillaBlocks::WATER()){
 				return -1;
 			}
 		}

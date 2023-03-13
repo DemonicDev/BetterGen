@@ -21,27 +21,26 @@ namespace Ad5001\BetterGen\structure;
 
 use Ad5001\BetterGen\utils\BuildingUtils;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\generator\object\PopulatorObject;
-use pocketmine\level\generator\object\Tree as ObjectTree;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\generator\object\Tree as ObjectTree;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 use function intval;
-
-class FallenTree extends PopulatorObject{
+use pocketmine\block\VanillaBlocks;
+class FallenTree{
 
 	/** @var array */
 	public static $overridable = [
-		Block::AIR        => true,
-		Block::SAPLING    => true,
-		Block::WOOD       => true,
-		Block::LEAVES     => true,
-		Block::DANDELION  => true,
-		Block::POPPY      => true,
-		Block::SNOW_LAYER => true,
-		Block::LOG2       => true,
-		Block::LEAVES2    => true,
-		Block::CACTUS     => true
+		0 => true,
+		6 => true,
+		467 => true,
+		18 => true,
+		37 => true,
+		38 => true,
+		78 => true,
+		162 => true,
+		161 => true,
+		81 => true
 	];
 
 	public $trunk = [];

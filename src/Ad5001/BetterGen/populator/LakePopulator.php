@@ -21,8 +21,8 @@ namespace Ad5001\BetterGen\populator;
 
 use Ad5001\BetterGen\utils\BuildingUtils;
 use pocketmine\block\Block;
-use pocketmine\level\ChunkManager;
-use pocketmine\level\Level;
+use pocketmine\world\ChunkManager;
+use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 

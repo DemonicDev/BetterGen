@@ -25,9 +25,15 @@ use Ad5001\BetterGen\populator\BushPopulator;
 use Ad5001\BetterGen\populator\FallenTreePopulator;
 use Ad5001\BetterGen\populator\TreePopulator;
 use Ad5001\BetterGen\utils\CommonUtils;
-use pocketmine\level\biome\Biome;
-use pocketmine\level\biome\ForestBiome;
-use pocketmine\level\generator\populator\TallGrass;
+use pocketmine\world\biome\Biome;
+use pocketmine\world\biome\ForestBiome;
+use pocketmine\world\generator\populator\TallGrass;
+/**use pocketmine\world\generator\object\OakTree;
+use pocketmine\world\generator\object\BirchTree;
+use pocketmine\world\generator\object\SpruceTree;**/
+use pocketmine\block\VanillaBlocks;
+use pocketmine\data\bedrock\BiomeIds;
+use pocketmine\block\utils\TreeType;
 
 class BetterForest extends ForestBiome implements Mountainable{
 
@@ -40,8 +46,8 @@ class BetterForest extends ForestBiome implements Mountainable{
 
 	/** @var int[] * */
 	static $ids = [
-		Biome::FOREST,
-		Biome::BIRCH_FOREST,
+        BiomeIds::FOREST,
+        BiomeIds::BIRCH_FOREST,
 		Main::SAKURA_FOREST
 	];
 
@@ -51,8 +57,29 @@ class BetterForest extends ForestBiome implements Mountainable{
 	 * @param int $type = 0
 	 * @param array $infos
 	 */
+    public function replaceForMaxTrees(){
+        if(mt_rand(0,10) % 2 == 0){
+            return TRUE;
+        }
+        return false;
+    }
 	public function __construct(int $type = 0, array $infos = [0.6, 0.5]){
-		parent::__construct($type);
+        /**ADD TREETYPE BY DemonicDev**/
+        switch($type) {
+            case 0:
+                $test = TreeType::OAK();
+            break;
+            case 1:
+                $test = TreeType::SPRUCE();
+            break;
+            case 3:
+                $test = TreeType::BIRCH();
+            break;
+            default:
+               $test = TreeType::OAK();
+            break;
+        }
+		parent::__construct($test);
 
 		$this->clearPopulators();
 		$this->type = $type;
@@ -73,7 +100,9 @@ class BetterForest extends ForestBiome implements Mountainable{
 		}
 
 		$trees = new TreePopulator($type);
-		$trees->setBaseAmount((null !== @constant(TreePopulator::$types[$type] . "::maxPerChunk")) ? constant(TreePopulator::$types[$type] . "::maxPerChunk") : 5);
+        /**maxPerChunk dont exist ->DemonicDev*/
+		#$trees->setBaseAmount((null !== @constant(TreePopulator::$types[$type] . "::maxPerChunk")) ? constant(TreePopulator::$types[$type] . "::maxPerChunk") : 5);
+		$trees->setBaseAmount($this->replaceForMaxTrees() ? 10 : 5);
 
 		if(!CommonUtils::in_arrayi("Trees", BetterNormal::$options["delStruct"])){
 			$this->addPopulator($trees);

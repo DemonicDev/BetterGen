@@ -20,7 +20,9 @@ declare(strict_types = 1);
 namespace Ad5001\BetterGen\biome;
 
 use pocketmine\block\Block;
-use pocketmine\level\biome\Biome;
+use pocketmine\world\biome\Biome;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\data\bedrock\BiomeIds;
 
 class BetterRiver extends Biome{
 
@@ -31,17 +33,17 @@ class BetterRiver extends Biome{
 		$this->clearPopulators();
 
 		$this->setGroundCover([
-			Block::get(Block::SAND, 0),
-			Block::get(Block::SAND, 0),
-			Block::get(Block::SAND, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0),
-			Block::get(Block::SANDSTONE, 0)
+            VanillaBlocks::SAND(),
+			VanillaBlocks::SAND(),
+			VanillaBlocks::SAND(),
+			VanillaBlocks::SANDSTONE(),
+			VanillaBlocks::SANDSTONE(),
+			VanillaBlocks::SANDSTONE(),
+			VanillaBlocks::SANDSTONE(),
+			VanillaBlocks::SANDSTONE(),
+			VanillaBlocks::SANDSTONE(),
+			VanillaBlocks::SANDSTONE(),
+			VanillaBlocks::SANDSTONE()
 		]);
 
 		$this->setElevation(60, 60);
@@ -64,6 +66,6 @@ class BetterRiver extends Biome{
 	 * @return int
 	 */
 	public function getId(): int{
-		return Biome::RIVER;
+		return BiomeIds::RIVER;
 	}
 }
